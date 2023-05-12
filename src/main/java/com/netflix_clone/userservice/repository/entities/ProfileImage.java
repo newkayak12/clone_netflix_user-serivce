@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class ProfileImage implements Serializable {
     @EmbeddedId
     private ProfileId profile;
-    @Column(name = "url", nullable = true, columnDefinition = "VACHAR(500)")
+    @Column(name = "url", nullable = true, columnDefinition = "VARCHAR(500)")
     private String url;
     @Column(name = "regDate", columnDefinition = "DATETIME")
     private LocalDateTime regDate;
