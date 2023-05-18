@@ -1,4 +1,4 @@
-package com.netflix_clone.movieservice;
+package com.netflix_clone.userservice;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;

@@ -1,4 +1,4 @@
-package com.netflix_clone.movieservice.configure.eureka;
+package com.netflix_clone.userservice.configure.eureka;
 
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Configuration;

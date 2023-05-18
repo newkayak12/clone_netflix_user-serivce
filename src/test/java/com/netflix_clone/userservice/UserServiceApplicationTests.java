@@ -1,10 +1,10 @@
-package com.netflix_clone.movieservice;
+package com.netflix_clone.userservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MovieServiceApplicationTests {
+class UserServiceApplicationTests {
 
     @Test
     void contextLoads() {
