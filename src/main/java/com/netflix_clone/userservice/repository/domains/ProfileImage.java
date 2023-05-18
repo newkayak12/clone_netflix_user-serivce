@@ -1,4 +1,4 @@
-package com.netflix_clone.userservice.repository.entities;
+package com.netflix_clone.userservice.repository.domains;
 
 import javax.persistence.*;
 import java.io.Serializable;

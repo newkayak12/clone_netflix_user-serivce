@@ -1,4 +1,4 @@
-package com.netflix_clone.userservice.repository.entities;
+package com.netflix_clone.userservice.repository.domains;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

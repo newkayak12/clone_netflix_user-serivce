@@ -1,7 +1,6 @@
-package com.netflix_clone.userservice.repository.entities;
+package com.netflix_clone.userservice.repository.domains;
 
 import javax.persistence.*;
-import java.lang.annotation.Target;
 import java.time.LocalDateTime;
 
 /**

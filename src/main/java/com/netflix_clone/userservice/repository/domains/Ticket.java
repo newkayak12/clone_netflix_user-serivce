@@ -1,4 +1,4 @@
-package com.netflix_clone.userservice.repository.entities;
+package com.netflix_clone.userservice.repository.domains;
 
 import com.netflix_clone.userservice.component.enums.Resolution;
 import com.netflix_clone.userservice.component.enums.TicketType;

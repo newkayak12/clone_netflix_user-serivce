@@ -1,6 +1,6 @@
 package com.netflix_clone.userservice.repository.dto;
 
-import com.netflix_clone.userservice.repository.entities.ProfileDto;
+import com.netflix_clone.userservice.repository.domains.ProfileDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
