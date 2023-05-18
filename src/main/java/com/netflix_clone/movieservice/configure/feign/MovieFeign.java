@@ -1,12 +1,12 @@
-package com.netflix_clone.movieservice.configure.feign;
+package com.netflix_clone.userservice.configure.feign;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 
 @Component
-@Qualifier(value = "board")
-@FeignClient(name = "netflix-clone-board-service")
+@Qualifier(value = "movie")
+@FeignClient(name = "netflix-clone-movie-service")
 public interface MovieFeign {
 
 }
