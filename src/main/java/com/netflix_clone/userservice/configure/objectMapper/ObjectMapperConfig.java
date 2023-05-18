@@ -4,12 +4,18 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configurable(value = "objectMapper")
-public class Config {
-    private ObjectMapper objectMapper = new ObjectMapper();
+@Configuration(value = "objectMapperConfig")
+//@Component
+@RequiredArgsConstructor
+public class ObjectMapperConfig {
+    private  ObjectMapper objectMapper;
 
     private void deserializeWhenEmptyCase() {
         this.objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true);
@@ -42,6 +48,7 @@ public class Config {
 
     @Bean
     public ObjectMapper objectMapper () {
+        this.objectMapper = new ObjectMapper();
         this.deserializeSettings();
         this.serializeSettings();
         return this.objectMapper;
