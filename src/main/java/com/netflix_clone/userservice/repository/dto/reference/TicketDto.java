@@ -1,7 +1,7 @@
-package com.netflix_clone.userservice.repository.dto;
+package com.netflix_clone.userservice.repository.dto.reference;
 
-import com.netflix_clone.userservice.component.enums.Resolution;
-import com.netflix_clone.userservice.component.enums.TicketType;
+import com.netflix_clone.userservice.enums.Resolution;
+import com.netflix_clone.userservice.enums.TicketType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

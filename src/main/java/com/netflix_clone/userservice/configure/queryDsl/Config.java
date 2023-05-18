@@ -16,7 +16,7 @@ import javax.persistence.EntityManager;
 @Configuration(value = "querydsl")
 @RequiredArgsConstructor
 public class Config {
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     @Bean
     public JPQLQueryFactory jPQLQueryFactory(){

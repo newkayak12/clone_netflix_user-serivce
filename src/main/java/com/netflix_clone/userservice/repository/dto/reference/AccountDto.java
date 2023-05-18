@@ -1,4 +1,4 @@
-package com.netflix_clone.userservice.repository.dto;
+package com.netflix_clone.userservice.repository.dto.reference;
 
 import com.netflix_clone.userservice.repository.domains.ProfileDto;
 import lombok.AllArgsConstructor;

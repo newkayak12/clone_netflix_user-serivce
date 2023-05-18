@@ -1,9 +1,11 @@
 package com.netflix_clone.userservice.repository.domains;
 
-import com.netflix_clone.userservice.component.enums.Resolution;
-import com.netflix_clone.userservice.component.enums.TicketType;
+
+import com.netflix_clone.userservice.enums.Resolution;
+import com.netflix_clone.userservice.enums.TicketType;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 
 /**
  * Created on 2023-05-10
@@ -30,4 +32,6 @@ public class Ticket {
     private Boolean isSupportHDR;
     @Column(name = "savableCount", columnDefinition = "INT(11)")
     private Integer savableCount;
+    @Column(name = "price", columnDefinition = "DECIMAL(19)")
+    private BigInteger price;
 }

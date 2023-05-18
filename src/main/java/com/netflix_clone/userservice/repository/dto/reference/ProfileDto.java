@@ -1,4 +1,4 @@
-package com.netflix_clone.userservice.repository.dto;
+package com.netflix_clone.userservice.repository.dto.reference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,10 +14,11 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TicketPaymentLogDto implements Serializable {
-    private Long payNo;
+public class ProfileDto implements Serializable {
+    private Long profileNo;
     private AccountDto account;
-    private TicketDto ticket;
-    private String originalTransaction;
-    private LocalDateTime payDay;
+    private String profileName;
+    private LocalDateTime regDate;
+    private Boolean isPush;
+    private LocalDateTime lastSignInDate;
 }
