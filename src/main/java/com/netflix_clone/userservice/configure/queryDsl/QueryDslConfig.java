@@ -8,15 +8,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * Created on 2023-05-18
  * Project user-service
  */
 @Configuration(value = "querydsl")
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class QueryDslConfig {
-    private final EntityManager entityManager;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Bean
     public JPQLQueryFactory jPQLQueryFactory(){

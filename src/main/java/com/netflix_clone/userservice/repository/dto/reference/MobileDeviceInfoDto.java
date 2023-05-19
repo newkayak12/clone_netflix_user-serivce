@@ -1,5 +1,6 @@
 package com.netflix_clone.userservice.repository.dto.reference;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,12 +12,20 @@ import java.io.Serializable;
  * Project user-service
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class MobileDeviceInfoDto implements Serializable {
-    private ProfileIdDto profileId;
+    private Long profileId;
     private String deviceType;
     private String pushKey;
     private String uuid;
     private String osVersion;
+
+    @QueryProjection
+    public MobileDeviceInfoDto(Long profileId, String deviceType, String pushKey, String uuid, String osVersion) {
+        this.profileId = profileId;
+        this.deviceType = deviceType;
+        this.pushKey = pushKey;
+        this.uuid = uuid;
+        this.osVersion = osVersion;
+    }
 }

@@ -2,7 +2,7 @@ package com.netflix_clone.userservice.repository;
 
 import com.netflix_clone.userservice.exceptions.BecauseOf;
 import com.netflix_clone.userservice.repository.dto.request.SignInRequest;
-import com.netflix_clone.userservice.repository.user.UserRepository;
+import com.netflix_clone.userservice.repository.userRepository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

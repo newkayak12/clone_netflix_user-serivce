@@ -1,19 +1,20 @@
 package com.netflix_clone.userservice.repository.dto.request;
 
+/**
+ * Created on 2023-05-19
+ * Project user-service
+ */
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.netflix_clone.userservice.repository.dto.reference.AccountDto;
-import com.netflix_clone.userservice.repository.dto.reference.MobileDeviceInfoDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {
-        "userNo",
         "regDate",
         "isAdult",
         "adultCheckDate",
@@ -22,11 +23,6 @@ import java.time.LocalDateTime;
         "isSubscribed",
         "profiles",
 })
-public class SignInRequest extends AccountDto {
-    public SignInRequest(String userId, String userPwd, MobileDeviceInfoDto deviceInfo) {
-        super(null, userId, userPwd, null, null, null, null, null, null, null);
-//        this.deviceInfo = deviceInfo;
-    }
-
-//    private MobileDeviceInfoDto deviceInfo;
+public class ChangePasswordRequest extends AccountDto {
+    private String newUserPwd;
 }
