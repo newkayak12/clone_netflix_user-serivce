@@ -16,15 +16,11 @@ import javax.persistence.PersistenceContext;
  * Project user-service
  */
 @Configuration(value = "querydsl")
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class QueryDslConfig {
 
+    @PersistenceContext
     private EntityManager entityManager;
-    @Autowired
-    public QueryDslConfig(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
 
     @Bean
     public JPQLQueryFactory jPQLQueryFactory(){

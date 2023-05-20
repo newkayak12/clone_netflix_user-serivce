@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Setter
 @Getter
 @NoArgsConstructor
@@ -17,16 +15,14 @@ import java.time.LocalDateTime;
         "regDate",
         "isAdult",
         "adultCheckDate",
-        "mobileNo",
-        "email",
         "isSubscribed",
         "profiles",
 })
-public class SignInRequest extends AccountDto {
-    public SignInRequest(String userId, String userPwd, MobileDeviceInfoDto deviceInfo) {
-        super(null, userId, userPwd, null, null, null, null, null, null, null);
+public class SignUpRequest extends AccountDto {
+
+    public SignUpRequest(String userId, String userPwd,String mobileNo, String email,  MobileDeviceInfoDto deviceInfo) {
+        super(null, userId, userPwd, null, false, null, mobileNo, email, false, null);
 //        this.deviceInfo = deviceInfo;
     }
-
 //    private MobileDeviceInfoDto deviceInfo;
 }

@@ -33,7 +33,19 @@ public class Account implements Serializable {
     private String email;
     @Column(name = "isSubscribed", columnDefinition = "BIT(1)")
     private Boolean isSubscribed;
+    @Column(name = "lastSignDate", columnDefinition = "DATETIME")
+    private LocalDateTime lastSignDate;
 
     @OneToMany(mappedBy = "account")
     private List<Profile> profiles = new ArrayList<>();
+
+    @PostLoad
+    public void renewSignDate(){
+        this.lastSignDate = LocalDateTime.now();
+    }
+
+    @PrePersist
+    public void signUpDate() {
+        this.regDate = LocalDateTime.now();
+    }
 }

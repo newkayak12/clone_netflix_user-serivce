@@ -1,5 +1,6 @@
 package com.netflix_clone.userservice.repository.dto.reference;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,14 @@ public class ProfileDto implements Serializable {
     private LocalDateTime regDate;
     private Boolean isPush;
     private LocalDateTime lastSignInDate;
+    private ProfileImageDto profileImage;
+
+
+    @QueryProjection
+    public ProfileDto(Long profileNo, String profileName, LocalDateTime regDate, Boolean isPush) {
+        this.profileNo = profileNo;
+        this.profileName = profileName;
+        this.regDate = regDate;
+        this.isPush = isPush;
+    }
 }
