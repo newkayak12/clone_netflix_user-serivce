@@ -13,6 +13,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.repository.config.BootstrapMode;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.*;
 @DataJpaTest(bootstrapMode = BootstrapMode.DEFAULT, showSql = true)
@@ -20,12 +23,14 @@ import static org.assertj.core.api.Assertions.*;
 @ComponentScan(includeFilters = {
         @ComponentScan.Filter(
                 type = FilterType.ANNOTATION,
-                classes = {Configuration.class}
+                classes = {Configuration.class, Repository.class}
         )
 })
 @Profile("local")
 public class UserRepositoryTest {
 
+    @Autowired
+    EntityManager entityManager;
     @Autowired
     private UserRepository repository;
 

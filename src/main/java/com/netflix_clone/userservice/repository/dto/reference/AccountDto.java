@@ -1,6 +1,7 @@
 package com.netflix_clone.userservice.repository.dto.reference;
 
 import com.netflix_clone.userservice.repository.domains.ProfileDto;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,6 @@ import java.util.List;
  * Project user-service
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class AccountDto implements Serializable {
     private Long userNo;
@@ -28,4 +28,18 @@ public class AccountDto implements Serializable {
     private String email;
     private Boolean isSubscribed;
     private List<ProfileDto> profiles = new ArrayList<>();
+
+    @QueryProjection
+    public AccountDto(Long userNo, String userId, String userPwd, LocalDateTime regDate, Boolean isAdult, LocalDateTime adultCheckDate, String mobileNo, String email, Boolean isSubscribed, List<ProfileDto> profiles) {
+        this.userNo = userNo;
+        this.userId = userId;
+        this.userPwd = userPwd;
+        this.regDate = regDate;
+        this.isAdult = isAdult;
+        this.adultCheckDate = adultCheckDate;
+        this.mobileNo = mobileNo;
+        this.email = email;
+        this.isSubscribed = isSubscribed;
+        this.profiles = profiles;
+    }
 }

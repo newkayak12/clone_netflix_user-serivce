@@ -25,20 +25,20 @@ public interface SignIn {
 
     Boolean isIsSubscribed();
 
-    List<ProfileInfo> getProfiles();
+//    List<ProfileInfo> getProfiles();
 
     /**
      * A Projection for the {@link com.netflix_clone.userservice.repository.domains.Profile} entity
      */
-    interface ProfileInfo {
-        Long getProfileNo();
-
-        String getProfileName();
-
-        LocalDateTime getRegDate();
-
-        Boolean isIsPush();
-
-        LocalDateTime getLastSignInDate();
-    }
+//    interface ProfileInfo {
+//        Long getProfileNo();
+//
+//        String getProfileName();
+//
+//        LocalDateTime getRegDate();
+//
+//        Boolean isIsPush();
+//
+//        LocalDateTime getLastSignInDate();
+//    }
 }

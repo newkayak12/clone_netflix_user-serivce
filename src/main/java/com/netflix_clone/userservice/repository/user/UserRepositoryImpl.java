@@ -31,7 +31,7 @@ public class UserRepositoryImpl extends QuerydslRepositorySupport implements Use
         builder.and(account.userId.eq(accountDto.getUserId()));
 
         return query
-                .select(Projections.constructor(AccountDto.class, ExpressionUtils.toExpression(SignIn.class)))
+                .select(Projections.bean(AccountDto.class, ExpressionUtils.toExpression(SignIn.class)))
                 .from(account)
                 .where(builder)
                 .fetchOne();
