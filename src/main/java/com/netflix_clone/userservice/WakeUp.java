@@ -1,6 +1,7 @@
 package com.netflix_clone.userservice;
 
 import com.netflix_clone.userservice.repository.user.UserRepository;
+import com.netflix_clone.userservice.repository.userRepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class WakeUp {
     private final UserRepository repository;
-
     @EventListener(value = {ApplicationReadyEvent.class})
     public void message(){
         log.warn("{} is ready", repository.wakeUpMsg("\n" +

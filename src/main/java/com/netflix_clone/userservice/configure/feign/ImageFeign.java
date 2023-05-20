@@ -8,10 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
  * Created on 2023-05-12
  * Project user-service
  */
-@Qualifier(value = "board")
-@FeignClient(name = "netflix-clone-board-service")
-public interface BoardFeign {
+@Qualifier(value = "image")
+@FeignClient(name = "netflix-clone-image-service")
+public interface ImageFeign {
 
-    @GetMapping("/api/v1/board/faqs/")
-    public String getFaq();
+
 }

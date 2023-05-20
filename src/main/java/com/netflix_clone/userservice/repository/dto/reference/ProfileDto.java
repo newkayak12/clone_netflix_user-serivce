@@ -22,7 +22,6 @@ public class ProfileDto implements Serializable {
     private LocalDateTime regDate;
     private Boolean isPush;
     private LocalDateTime lastSignInDate;
-    private ProfileImageDto profileImage;
 
 
     @QueryProjection
