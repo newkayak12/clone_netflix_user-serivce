@@ -3,6 +3,7 @@ package com.netflix_clone.userservice.repository.deviceRepository;
 import com.netflix_clone.userservice.repository.domains.MobileDeviceInfo;
 import com.netflix_clone.userservice.repository.dto.reference.AccountDto;
 import com.netflix_clone.userservice.repository.dto.reference.MobileDeviceInfoDto;
+import com.netflix_clone.userservice.repository.dto.reference.ProfileDto;
 import com.netflix_clone.userservice.repository.dto.reference.QMobileDeviceInfoDto;
 import com.querydsl.jpa.JPQLQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class DeviceRepositoryImpl extends QuerydslRepositorySupport implements D
 
 
     @Override
-    public MobileDeviceInfoDto findByUserNo(AccountDto accountDto) {
+    public MobileDeviceInfoDto findByProfileNo(Long profileNo) {
         return query
                 .select(new QMobileDeviceInfoDto(
                         mobileDeviceInfo.profileId.profile.profileNo,
@@ -34,7 +35,7 @@ public class DeviceRepositoryImpl extends QuerydslRepositorySupport implements D
                         mobileDeviceInfo.osVersion
                 ))
                 .from(mobileDeviceInfo)
-                .where(mobileDeviceInfo.profileId.profile.profileNo.eq(accountDto.getUserNo()))
+                .where(mobileDeviceInfo.profileId.profile.profileNo.eq(profileNo))
                 .fetchOne();
     }
 }

@@ -2,8 +2,8 @@ package com.netflix_clone.userservice.repository.profileRepository;
 
 import com.netflix_clone.userservice.repository.domains.Profile;
 import com.netflix_clone.userservice.repository.dto.reference.ProfileDto;
-import com.netflix_clone.userservice.repository.dto.reference.QAccountDto;
 import com.netflix_clone.userservice.repository.dto.reference.QProfileDto;
+import com.netflix_clone.userservice.repository.dto.request.ProfileModifyRequest;
 import com.netflix_clone.userservice.repository.dto.request.ProfileRequest;
 import com.querydsl.jpa.JPQLQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,20 @@ public class ProfileRepositoryImpl extends QuerydslRepositorySupport implements 
     }
 
     @Override
+    public ProfileDto findByProfileNo(Long profileNo) {
+        return query
+                .select(new QProfileDto(
+                        profile.profileNo,
+                        profile.profileName,
+                        profile.regDate,
+                        profile.isPush
+                ))
+                .from(profile)
+                .where(profile.profileNo.eq(profileNo))
+                .fetchOne();
+    }
+
+    @Override
     public List<ProfileDto> profiles(ProfileRequest profileRequest) {
         return query
                 .select(new QProfileDto(
@@ -37,5 +51,21 @@ public class ProfileRepositoryImpl extends QuerydslRepositorySupport implements 
                 .from(profile)
                 .where(profile.account.userNo.eq(profileRequest.getUserNo()))
                 .fetch();
+    }
+
+    @Override
+    public Boolean isChangeProfileName(ProfileModifyRequest profileNameRequest) {
+        return query.update(profile)
+                    .set(profile.profileName, profileNameRequest.getProfileName())
+                    .where(profile.profileNo.eq(profileNameRequest.getProfileNo()))
+                    .execute() >= 1;
+    }
+
+    @Override
+    public Boolean isChangePushState(ProfileModifyRequest profileNameRequest) {
+        return query.update(profile)
+                .set(profile.isPush, profileNameRequest.getIsPush())
+                .where(profile.profileNo.eq(profileNameRequest.getProfileNo()))
+                .execute() >= 1;
     }
 }

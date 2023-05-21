@@ -7,5 +7,7 @@ package com.netflix_clone.userservice.enums;
 public enum FileType {
     PROFILE,
     CONTENTS,
-
+    ACTOR,
+    DIRECTOR,
+    TICKET
 }

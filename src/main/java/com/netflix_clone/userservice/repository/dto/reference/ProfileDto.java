@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -22,6 +23,11 @@ public class ProfileDto implements Serializable {
     private LocalDateTime regDate;
     private Boolean isPush;
     private LocalDateTime lastSignInDate;
+
+    @Transient
+    private FileDto image;
+    @Transient
+    private MobileDeviceInfoDto deviceInfo;
 
 
     @QueryProjection

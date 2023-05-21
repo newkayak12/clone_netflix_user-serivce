@@ -3,6 +3,7 @@ package com.netflix_clone.userservice.repository.dto.reference;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.io.Serializable;
  */
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"deviceType", "uuid", "pushKey"})
 public class MobileDeviceInfoDto implements Serializable {
     private Long profileId;
     private String deviceType;

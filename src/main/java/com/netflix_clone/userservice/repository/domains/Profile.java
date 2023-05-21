@@ -29,4 +29,9 @@ public class Profile implements Serializable {
     private LocalDateTime lastSignInDate;
 
 
+
+    @PostLoad
+    public void renewLastSignInDate() {
+        this.lastSignInDate = LocalDateTime.now();
+    }
 }

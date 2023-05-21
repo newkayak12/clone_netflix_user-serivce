@@ -1,6 +1,5 @@
 package com.netflix_clone.userservice;
 
-import com.netflix_clone.userservice.repository.user.UserRepository;
 import com.netflix_clone.userservice.repository.userRepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
