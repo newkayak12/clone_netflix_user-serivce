@@ -23,4 +23,6 @@ public class TicketController {
     public ResponseEntity<List<TicketDto>> tickets() {
         return new ResponseEntity<List<TicketDto>>(service.tickets(), HttpStatus.OK);
     }
+
+
 }
