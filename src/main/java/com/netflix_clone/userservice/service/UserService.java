@@ -4,11 +4,14 @@ import com.netflix_clone.userservice.exceptions.BecauseOf;
 import com.netflix_clone.userservice.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.deviceRepository.DeviceRepository;
 import com.netflix_clone.userservice.repository.domains.Account;
+import com.netflix_clone.userservice.repository.domains.TicketRaiseLog;
 import com.netflix_clone.userservice.repository.dto.reference.AccountDto;
 import com.netflix_clone.userservice.repository.dto.reference.MobileDeviceInfoDto;
+import com.netflix_clone.userservice.repository.dto.reference.TicketRaiseLogDto;
 import com.netflix_clone.userservice.repository.dto.request.ChangePasswordRequest;
 import com.netflix_clone.userservice.repository.dto.request.SignInRequest;
 import com.netflix_clone.userservice.repository.dto.request.SignUpRequest;
+import com.netflix_clone.userservice.repository.ticketRaiseRepository.TicketRaiseRepository;
 import com.netflix_clone.userservice.repository.userRepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -26,7 +31,7 @@ import java.util.Optional;
 @Transactional(rollbackFor = Exception.class)
 public class UserService {
     private final UserRepository repository;
-    private final DeviceRepository deviceRepository;
+    private final TicketRaiseRepository ticketRaiseRepository;
     private final ModelMapper mapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -42,11 +47,9 @@ public class UserService {
         AccountDto dto = Optional.ofNullable(repository.signIn(signInRequest)).orElseThrow(() -> new CommonException(BecauseOf.ACCOUNT_NOT_EXIST));
         if(!this.isPasswordMatched(signInRequest.getUserPwd(), dto.getUserPwd())) throw new CommonException(BecauseOf.PASSWORD_NOT_MATCHED);
 
-// TODO: MOBILE DEVICE INFO
-//        if(Objects.nonNull(signInRequest.getDeviceInfo()) && isDeviceInfoChanged(dto.getUserNo(), signInRequest.getDeviceInfo())) {
-//            changeDeviceInfo(dto.getUserNo(), signInRequest.getDeviceInfo());
-//        }
-
+        TicketRaiseLogDto ticketStatus = Optional.ofNullable(ticketRaiseRepository.ticketInfoByUserNo(dto.getUserNo(), LocalDate.now()))
+                                               .orElseGet(() -> null);
+        dto.setTicketStatus(ticketStatus);
         return dto;
     }
 

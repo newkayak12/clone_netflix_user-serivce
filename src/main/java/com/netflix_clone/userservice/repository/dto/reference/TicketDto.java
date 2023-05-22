@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.math.BigInteger;
 
 /**
  * Created on 2023-05-10
@@ -25,12 +26,15 @@ public class TicketDto implements Serializable {
     private Resolution maximumResolution;
     private Boolean isSupportHDR;
     private Integer savableCount;
+    private BigInteger price;
 
     @Transient
     private FileDto image;
 
     @QueryProjection
-    public TicketDto(Long ticketNo, String name, TicketType type, Integer watchableSimultaneously, Resolution maximumResolution, Boolean isSupportHDR, Integer savableCount) {
+    public TicketDto(Long ticketNo, String name, TicketType type,
+                     Integer watchableSimultaneously, Resolution maximumResolution,
+                     Boolean isSupportHDR, Integer savableCount, BigInteger price) {
         this.ticketNo = ticketNo;
         this.name = name;
         this.type = type;
@@ -38,5 +42,6 @@ public class TicketDto implements Serializable {
         this.maximumResolution = maximumResolution;
         this.isSupportHDR = isSupportHDR;
         this.savableCount = savableCount;
+        this.price = price;
     }
 }

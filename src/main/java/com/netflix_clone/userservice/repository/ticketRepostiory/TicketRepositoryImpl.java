@@ -30,10 +30,29 @@ public class TicketRepositoryImpl extends QuerydslRepositorySupport implements T
                             ticket.watchableSimultaneously,
                             ticket.maximumResolution,
                             ticket.isSupportHDR,
-                            ticket.savableCount
+                            ticket.savableCount,
+                            ticket.price
                     )
                 )
                 .from(ticket)
                 .fetch();
+    }
+
+    @Override
+    public TicketDto ticket(Long ticketNo) {
+        return query.select(
+                             new QTicketDto(
+                                     ticket.ticketNo,
+                                     ticket.name,
+                                     ticket.type,
+                                     ticket.watchableSimultaneously,
+                                     ticket.maximumResolution,
+                                     ticket.isSupportHDR,
+                                     ticket.savableCount,
+                                     ticket.price
+                             )
+                     )
+                     .from(ticket)
+                     .fetchOne();
     }
 }

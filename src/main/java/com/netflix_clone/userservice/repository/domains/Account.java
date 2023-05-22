@@ -23,7 +23,7 @@ public class Account implements Serializable {
     private String userPwd;
     @Column(name = "regDate", columnDefinition = "DATETIME default CURRENT_TIMESTAMP()")
     private LocalDateTime regDate;
-    @Column(name = "isAdult", columnDefinition = "BIT(1)")
+    @Column(name = "isAdult", columnDefinition = "BIT(1) default FALSE")
     private Boolean isAdult;
     @Column(name = "adultCheckDate", columnDefinition = "DATETIME")
     private LocalDateTime adultCheckDate;

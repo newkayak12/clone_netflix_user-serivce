@@ -1,6 +1,7 @@
 package com.netflix_clone.userservice.repository.domains;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 /**
  * Created on 2023-05-10
@@ -11,8 +12,8 @@ import javax.persistence.*;
 public class TicketRaiseLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "raiseLog")
-    private Long raiseLog;
+    @Column(name = "raiseLogNo")
+    private Long raiseLogNo;
 
     @ManyToOne
     @JoinColumn(name = "ticketNo")
@@ -26,5 +27,11 @@ public class TicketRaiseLog {
     @JoinColumn(name = "payNo")
     private TicketPaymentLog ticketPaymentLog;
 
+    @Column(name = "endDate", columnDefinition = "DATE")
+    private LocalDate startDate;
+    @Column(name = "endDate", columnDefinition = "DATE")
+    private LocalDate endDate;
+    @Column(name = "isActive", columnDefinition = "BIT(1)")
+    private Boolean isActive;
 
 }

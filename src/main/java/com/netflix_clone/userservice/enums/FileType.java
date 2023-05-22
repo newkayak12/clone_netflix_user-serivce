@@ -9,5 +9,7 @@ public enum FileType {
     CONTENTS,
     ACTOR,
     DIRECTOR,
-    TICKET
+    TICKET,
+    BANNER,
+    NOTICE
 }

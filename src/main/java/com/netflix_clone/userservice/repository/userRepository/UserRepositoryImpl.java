@@ -8,6 +8,7 @@ import com.netflix_clone.userservice.repository.dto.request.SignInRequest;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import static com.netflix_clone.userservice.repository.domains.QAccount.account;
@@ -26,6 +27,7 @@ public class UserRepositoryImpl extends QuerydslRepositorySupport implements Use
     }
 
     @Override
+
     public AccountDto signIn(SignInRequest accountDto) {
         return query
                 .select(new QAccountDto(
