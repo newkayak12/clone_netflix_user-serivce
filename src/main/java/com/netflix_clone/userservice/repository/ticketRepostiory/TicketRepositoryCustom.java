@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface TicketRepositoryCustom {
     List<TicketDto> tickets();
+    TicketDto ticket(Long ticketNo);
 }

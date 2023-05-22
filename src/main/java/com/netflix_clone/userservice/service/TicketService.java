@@ -2,6 +2,8 @@ package com.netflix_clone.userservice.service;
 
 import com.netflix_clone.userservice.configure.feign.ImageFeign;
 import com.netflix_clone.userservice.enums.FileType;
+import com.netflix_clone.userservice.exceptions.BecauseOf;
+import com.netflix_clone.userservice.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.domains.Ticket;
 import com.netflix_clone.userservice.repository.dto.reference.FileDto;
 import com.netflix_clone.userservice.repository.dto.reference.TicketDto;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 public class TicketService {
     private final TicketRepository repository;
     private final ImageFeign imageFeign;
+
     public List<TicketDto> tickets() {
         List<TicketDto> tickets = repository.tickets();
         return tickets.stream().peek( ticket -> {
@@ -28,5 +32,14 @@ public class TicketService {
                                       .getBody().stream().findAny().orElseGet(() -> null);
             ticket.setImage(image);
         }).collect(Collectors.toList());
+    }
+
+    public TicketDto ticket(Long ticketNo) throws CommonException {
+        return Optional.ofNullable(repository.ticket(ticketNo)).map( ticket -> {
+            FileDto image = imageFeign.files(ticket.getTicketNo(), FileType.TICKET)
+                                      .getBody().stream().findAny().orElseGet(() -> null);
+            ticket.setImage(image);
+            return ticket;
+        }).orElseThrow(() -> new CommonException(BecauseOf.NO_DATA));
     }
 }
