@@ -27,7 +27,7 @@ public class TicketRaiseLog {
     @JoinColumn(name = "payNo")
     private TicketPaymentLog ticketPaymentLog;
 
-    @Column(name = "endDate", columnDefinition = "DATE")
+    @Column(name = "startDate", columnDefinition = "DATE")
     private LocalDate startDate;
     @Column(name = "endDate", columnDefinition = "DATE")
     private LocalDate endDate;

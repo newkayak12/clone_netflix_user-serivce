@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
  * Created on 2023-05-19
  * Project user-service
  */
-@Configuration(value = "jpaConfig")
+@Configuration(value = "jpa_configuration")
 @EnableJpaAuditing
-public class JpaConfig {
+public class Config {
 }

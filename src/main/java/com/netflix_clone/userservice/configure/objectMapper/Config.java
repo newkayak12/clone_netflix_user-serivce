@@ -5,16 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
-@Configuration(value = "objectMapperConfig")
+@Configuration(value = "objectMapper_configuration")
 //@Component
 @RequiredArgsConstructor
-public class ObjectMapperConfig {
+public class Config {
     private  ObjectMapper objectMapper;
 
     private void deserializeWhenEmptyCase() {

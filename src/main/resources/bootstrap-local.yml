@@ -1,6 +1,7 @@
 spring:
-  #  profiles:
-  #    active: local
+#    profiles:
+#      - local
+#      - rabbit
   application:
     name: netflix_clone_user_service
   config:
