@@ -1,12 +1,15 @@
 package com.netflix_clone.userservice.service;
 
 import com.netflix_clone.userservice.configure.feign.ImageFeign;
+import com.netflix_clone.userservice.configure.rabbit.RabbitPublisher;
 import com.netflix_clone.userservice.delegate.ImageDelegate;
 import com.netflix_clone.userservice.enums.FileType;
+import com.netflix_clone.userservice.enums.Rabbit;
 import com.netflix_clone.userservice.exceptions.BecauseOf;
 import com.netflix_clone.userservice.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.deviceRepository.DeviceRepository;
 import com.netflix_clone.userservice.repository.domains.MobileDeviceInfo;
+import com.netflix_clone.userservice.repository.domains.Profile;
 import com.netflix_clone.userservice.repository.dto.reference.FileDto;
 import com.netflix_clone.userservice.repository.dto.reference.FileRequest;
 import com.netflix_clone.userservice.repository.dto.reference.MobileDeviceInfoDto;
@@ -14,6 +17,7 @@ import com.netflix_clone.userservice.repository.dto.reference.ProfileDto;
 import com.netflix_clone.userservice.repository.dto.request.ProfileImageRequest;
 import com.netflix_clone.userservice.repository.dto.request.ProfileModifyRequest;
 import com.netflix_clone.userservice.repository.dto.request.ProfileRequest;
+import com.netflix_clone.userservice.repository.dto.request.ProfileSaveRequest;
 import com.netflix_clone.userservice.repository.profileRepository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +44,7 @@ public class ProfileService {
     private final DeviceRepository deviceRepository;
     private final ImageFeign imageFeign;
     private final ImageDelegate imageDelegate;
+    private final RabbitPublisher rabbitPublisher;
 
     private Boolean isDeviceInfoChanged(Long profileNo, MobileDeviceInfoDto mobileDeviceInfoDto){
         MobileDeviceInfoDto dto = deviceRepository.findByProfileNo(profileNo);
@@ -100,6 +105,34 @@ public class ProfileService {
                                    .stream()
                                    .findAny()
                                    .orElseThrow(() -> new CommonException(BecauseOf.UPDATE_FAILURE));
+
+        return result;
+    }
+
+    public ProfileDto saveProfile(ProfileSaveRequest profileSaveRequest) {
+        Profile profile = mapper.map(profileSaveRequest, Profile.class);
+        Long profileNo = mapper.map(repository.save(profile), ProfileDto.class).getProfileNo();
+        ProfileDto result = mapper.map(profile, ProfileDto.class);
+
+        if(Objects.nonNull(profileSaveRequest.getDeviceInfo())){
+            MobileDeviceInfoDto deviceInfoDto = profileSaveRequest.getDeviceInfo();
+            deviceInfoDto.setProfileId(profileNo);
+
+            deviceRepository.save(mapper.map(deviceInfoDto, MobileDeviceInfo.class));
+            result.setDeviceInfo(deviceInfoDto);
+        }
+
+        if(Objects.nonNull(profileSaveRequest.getRawFile())) {
+            FileRequest request = new FileRequest();
+            request.setRawFile(profileSaveRequest.getRawFile());
+            request.setTableNo(profileNo);
+            request.setFileType(FileType.PROFILE);
+
+            FileDto fileDto = imageFeign.save(Arrays.asList(request)).getBody().stream().findAny().orElseGet(() -> null);
+            result.setImage(fileDto);
+        }
+
+        rabbitPublisher.send(Rabbit.Exchange.PROFILE.getValue(), Rabbit.RoutingKey.SAVE.name(), result);
 
         return result;
     }

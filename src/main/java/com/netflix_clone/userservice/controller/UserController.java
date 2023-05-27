@@ -1,20 +1,19 @@
 package com.netflix_clone.userservice.controller;
 
 import com.netflix_clone.userservice.configure.feign.BoardFeign;
+import com.netflix_clone.userservice.configure.rabbit.RabbitPublisher;
 import com.netflix_clone.userservice.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.dto.reference.AccountDto;
 import com.netflix_clone.userservice.repository.dto.request.ChangePasswordRequest;
 import com.netflix_clone.userservice.repository.dto.request.SignInRequest;
 import com.netflix_clone.userservice.repository.dto.request.SignUpRequest;
 import com.netflix_clone.userservice.service.UserService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
+import java.util.Map;
 
 /**
  * Created on 2023-05-12
@@ -24,8 +23,9 @@ import java.net.http.HttpResponse;
 @RequestMapping(value = "/api/v1/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final BoardFeign boardFeign;
     private final UserService service;
+
+
 
     @GetMapping(value = "/sign/in")
     public ResponseEntity<AccountDto> signIn(@ModelAttribute SignInRequest signInRequest) throws CommonException {

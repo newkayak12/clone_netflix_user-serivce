@@ -7,6 +7,7 @@ import com.netflix_clone.userservice.repository.dto.reference.ProfileDto;
 import com.netflix_clone.userservice.repository.dto.request.ProfileImageRequest;
 import com.netflix_clone.userservice.repository.dto.request.ProfileModifyRequest;
 import com.netflix_clone.userservice.repository.dto.request.ProfileRequest;
+import com.netflix_clone.userservice.repository.dto.request.ProfileSaveRequest;
 import com.netflix_clone.userservice.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,11 @@ public class ProfileController {
     @GetMapping(value = "/{profileNo}")
     public ResponseEntity<ProfileDto> profile(@PathVariable Long profileNo, @ModelAttribute MobileDeviceInfoDto mobileDeviceInfoDto) {
         return new ResponseEntity<ProfileDto>(service.profile(profileNo, mobileDeviceInfoDto), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProfileDto> saveProfile(@ModelAttribute ProfileSaveRequest profileSaveRequest){
+        return new ResponseEntity<>(service.saveProfile(profileSaveRequest), HttpStatus.OK);
     }
 
     @PatchMapping(value = "/{profileNo}/profileName")

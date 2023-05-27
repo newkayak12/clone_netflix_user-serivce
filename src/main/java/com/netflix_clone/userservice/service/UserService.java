@@ -1,5 +1,7 @@
 package com.netflix_clone.userservice.service;
 
+import com.netflix_clone.userservice.configure.rabbit.RabbitPublisher;
+import com.netflix_clone.userservice.enums.Rabbit;
 import com.netflix_clone.userservice.exceptions.BecauseOf;
 import com.netflix_clone.userservice.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.deviceRepository.DeviceRepository;
@@ -34,6 +36,7 @@ public class UserService {
     private final TicketRaiseRepository ticketRaiseRepository;
     private final ModelMapper mapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     private Boolean isPasswordMatched(String rawPassword, String encryptedPassword) {
         return bCryptPasswordEncoder.matches(rawPassword, encryptedPassword);
