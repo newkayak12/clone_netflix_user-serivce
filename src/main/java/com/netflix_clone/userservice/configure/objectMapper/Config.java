@@ -22,6 +22,10 @@ public class Config {
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
+
+    private void serializeDateTime() {
+        this.objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
+    }
     private void deserializeWhenEnumCase() {
         this.objectMapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
         this.objectMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
@@ -33,6 +37,7 @@ public class Config {
         this.deserializeWhenEnumCase();
         this.deserializeWhenEmptyCase();
         this.deserializeWhenUnknownCase();
+        this.serializeDateTime();
         this.deserializeRegisterJavaTimeModule();
     }
 
@@ -42,12 +47,16 @@ public class Config {
         this.objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,false);
     }
 
+    private void setJavaModule() {
+        this.objectMapper.registerModule(new JavaTimeModule());
+    }
 
     @Bean
     public ObjectMapper objectMapper () {
         this.objectMapper = new ObjectMapper();
         this.deserializeSettings();
         this.serializeSettings();
+        this.setJavaModule();
         return this.objectMapper;
     }
 }

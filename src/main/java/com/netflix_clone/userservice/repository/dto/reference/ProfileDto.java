@@ -4,6 +4,7 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Transient;
 import java.io.Serializable;
@@ -22,6 +23,7 @@ public class ProfileDto implements Serializable {
     private String profileName;
     private LocalDateTime regDate;
     private Boolean isPush;
+    @DateTimeFormat(pattern = "yyyy-MM-dd`T`hh:mm:ss")
     private LocalDateTime lastSignInDate;
 
     @Transient

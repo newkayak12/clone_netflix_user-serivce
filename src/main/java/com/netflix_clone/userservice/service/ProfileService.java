@@ -132,7 +132,7 @@ public class ProfileService {
             result.setImage(fileDto);
         }
 
-        rabbitPublisher.send(Rabbit.Exchange.PROFILE.getValue(), Rabbit.RoutingKey.SAVE.name(), result);
+//        rabbitPublisher.send(Rabbit.Topic.USER.getName(), Rabbit.RoutingKey.PROFILE_SAVE.name(), result);
 
         return result;
     }

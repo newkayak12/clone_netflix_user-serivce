@@ -1,7 +1,5 @@
 package com.netflix_clone.userservice.controller;
 
-import com.netflix_clone.userservice.configure.feign.BoardFeign;
-import com.netflix_clone.userservice.configure.rabbit.RabbitPublisher;
 import com.netflix_clone.userservice.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.dto.reference.AccountDto;
 import com.netflix_clone.userservice.repository.dto.request.ChangePasswordRequest;
@@ -12,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 /**
  * Created on 2023-05-12
