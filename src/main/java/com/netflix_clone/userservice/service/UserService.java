@@ -1,14 +1,10 @@
 package com.netflix_clone.userservice.service;
 
-import com.netflix_clone.userservice.configure.rabbit.RabbitPublisher;
-import com.netflix_clone.userservice.enums.Rabbit;
-import com.netflix_clone.userservice.exceptions.BecauseOf;
-import com.netflix_clone.userservice.exceptions.CommonException;
-import com.netflix_clone.userservice.repository.deviceRepository.DeviceRepository;
+import com.netflix_clone.userservice.components.constants.Constants;
+import com.netflix_clone.userservice.components.exceptions.BecauseOf;
+import com.netflix_clone.userservice.components.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.domains.Account;
-import com.netflix_clone.userservice.repository.domains.TicketRaiseLog;
 import com.netflix_clone.userservice.repository.dto.reference.AccountDto;
-import com.netflix_clone.userservice.repository.dto.reference.MobileDeviceInfoDto;
 import com.netflix_clone.userservice.repository.dto.reference.TicketRaiseLogDto;
 import com.netflix_clone.userservice.repository.dto.request.ChangePasswordRequest;
 import com.netflix_clone.userservice.repository.dto.request.SignInRequest;
@@ -21,9 +17,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tokenManager.TokenControl;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -36,6 +33,7 @@ public class UserService {
     private final TicketRaiseRepository ticketRaiseRepository;
     private final ModelMapper mapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final TokenControl tokenControl;
 
 
     private Boolean isPasswordMatched(String rawPassword, String encryptedPassword) {
@@ -46,13 +44,15 @@ public class UserService {
         accountDto.setUserPwd(bCryptPasswordEncoder.encode(accountDto.getUserPwd()));
     }
 
-    public AccountDto signIn(SignInRequest signInRequest) throws CommonException {
+    public AccountDto signIn(SignInRequest signInRequest, HttpServletResponse response) throws CommonException {
         AccountDto dto = Optional.ofNullable(repository.signIn(signInRequest)).orElseThrow(() -> new CommonException(BecauseOf.ACCOUNT_NOT_EXIST));
         if(!this.isPasswordMatched(signInRequest.getUserPwd(), dto.getUserPwd())) throw new CommonException(BecauseOf.PASSWORD_NOT_MATCHED);
 
         TicketRaiseLogDto ticketStatus = Optional.ofNullable(ticketRaiseRepository.ticketInfoByUserNo(dto.getUserNo(), LocalDate.now()))
-                                               .orElseGet(() -> null);
+                                                 .orElseGet(() -> null);
         dto.setTicketStatus(ticketStatus);
+
+        response.addHeader(Constants.TOKEN_NAME, tokenControl.encrypt(dto));
         return dto;
     }
 
@@ -61,20 +61,27 @@ public class UserService {
         return repository.countAccountByUserId(userId).map( result -> result > 0 ? false : true).orElseGet(() -> true);
     }
 
-    public AccountDto signUp(SignUpRequest signUpRequest) throws CommonException {
+    public AccountDto signUp(SignUpRequest signUpRequest, HttpServletResponse response) throws CommonException {
         if(Objects.nonNull(signUpRequest.getUserNo())) throw new CommonException(BecauseOf.ALREADY_EXIST_ACCOUNT);
+
 
         AccountDto dto =  signUpRequest;
         encryptPassword(dto);
-        Account account = mapper.map(signUpRequest, Account.class);
 
-        return mapper.map(repository.save(account), AccountDto.class);
+        Account account = mapper.map(dto, Account.class);
+        dto = mapper.map(repository.save(account), AccountDto.class);
+
+
+        response.addHeader(Constants.TOKEN_NAME, tokenControl.encrypt(dto));
+        return dto;
     }
 
     public Boolean changePassword(ChangePasswordRequest changePasswordRequest) throws CommonException {
         AccountDto dto = repository.findAccountByUserId(changePasswordRequest.getUserId())
                                    .map(result -> mapper.map(result, AccountDto.class))
                                    .orElseThrow(() -> new CommonException(BecauseOf.NO_DATA));
+
+        changePasswordRequest.setUserNo(dto.getUserNo());
 
         if(
                 isPasswordMatched(changePasswordRequest.getUserPwd(), dto.getUserPwd()) &&

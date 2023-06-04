@@ -1,7 +1,7 @@
 package com.netflix_clone.userservice.controller;
 
-import com.netflix_clone.userservice.configure.rabbit.RabbitPublisher;
-import com.netflix_clone.userservice.enums.Rabbit;
+import com.netflix_clone.userservice.components.configure.rabbit.RabbitPublisher;
+import com.netflix_clone.userservice.components.enums.Rabbit;
 import com.netflix_clone.userservice.repository.dto.reference.ProfileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v1/pay")

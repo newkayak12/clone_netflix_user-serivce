@@ -1,12 +1,13 @@
 package com.netflix_clone.userservice.repository.dto.reference;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.netflix_clone.userservice.components.validations.AccountValid;
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,14 +21,23 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"lastSignDate", "adultCheckDate"}, allowSetters = false)
+@Getter
+@Setter
 public class AccountDto implements Serializable {
     private Long userNo;
+
+    @NotEmpty(message = "아이디를 입력하세요.", groups = {AccountValid.SignUp.class, AccountValid.SignIn.class})
     private String userId;
+    @NotEmpty(message = "비밀번호를 입력하세요.", groups = {AccountValid.SignUp.class, AccountValid.SignIn.class})
     private String userPwd;
     private LocalDateTime regDate;
     private Boolean isAdult;
     private LocalDateTime adultCheckDate;
+
+    @NotEmpty(message = "전화번호를 입력하세요.", groups = {AccountValid.SignUp.class})
     private String mobileNo;
+    @NotEmpty(message = "이메일 입력하세요.", groups = {AccountValid.SignUp.class})
+    @Email(message = "이메일 형식에 맞지 않습니다.", groups = {AccountValid.SignUp.class})
     private String email;
     private Boolean isSubscribed;
     private LocalDateTime lastSignDate;

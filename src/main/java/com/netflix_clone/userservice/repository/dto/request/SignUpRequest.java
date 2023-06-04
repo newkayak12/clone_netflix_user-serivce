@@ -20,7 +20,7 @@ import lombok.Setter;
 })
 public class SignUpRequest extends AccountDto {
 
-    public SignUpRequest(String userId, String userPwd,String mobileNo, String email,  MobileDeviceInfoDto deviceInfo) {
+    public SignUpRequest(String userId, String userPwd, String mobileNo, String email) {
         super(null, userId, userPwd, null, false, null, mobileNo, email, false, null);
 //        this.deviceInfo = deviceInfo;
     }

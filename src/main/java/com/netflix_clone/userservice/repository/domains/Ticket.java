@@ -1,8 +1,8 @@
 package com.netflix_clone.userservice.repository.domains;
 
 
-import com.netflix_clone.userservice.enums.Resolution;
-import com.netflix_clone.userservice.enums.TicketType;
+import com.netflix_clone.userservice.components.enums.Resolution;
+import com.netflix_clone.userservice.components.enums.TicketType;
 
 import javax.persistence.*;
 import java.math.BigInteger;

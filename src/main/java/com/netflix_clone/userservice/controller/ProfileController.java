@@ -1,6 +1,6 @@
 package com.netflix_clone.userservice.controller;
 
-import com.netflix_clone.userservice.exceptions.CommonException;
+import com.netflix_clone.userservice.components.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.dto.reference.FileDto;
 import com.netflix_clone.userservice.repository.dto.reference.MobileDeviceInfoDto;
 import com.netflix_clone.userservice.repository.dto.reference.ProfileDto;

@@ -1,10 +1,9 @@
 package com.netflix_clone.userservice.service;
 
-import com.netflix_clone.userservice.configure.feign.ImageFeign;
-import com.netflix_clone.userservice.enums.FileType;
-import com.netflix_clone.userservice.exceptions.BecauseOf;
-import com.netflix_clone.userservice.exceptions.CommonException;
-import com.netflix_clone.userservice.repository.domains.Ticket;
+import com.netflix_clone.userservice.components.configure.feign.ImageFeign;
+import com.netflix_clone.userservice.components.enums.FileType;
+import com.netflix_clone.userservice.components.exceptions.BecauseOf;
+import com.netflix_clone.userservice.components.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.dto.reference.FileDto;
 import com.netflix_clone.userservice.repository.dto.reference.TicketDto;
 import com.netflix_clone.userservice.repository.ticketRepostiory.TicketRepository;

@@ -1,12 +1,11 @@
 package com.netflix_clone.userservice.service;
 
-import com.netflix_clone.userservice.configure.feign.ImageFeign;
-import com.netflix_clone.userservice.configure.rabbit.RabbitPublisher;
-import com.netflix_clone.userservice.delegate.ImageDelegate;
-import com.netflix_clone.userservice.enums.FileType;
-import com.netflix_clone.userservice.enums.Rabbit;
-import com.netflix_clone.userservice.exceptions.BecauseOf;
-import com.netflix_clone.userservice.exceptions.CommonException;
+import com.netflix_clone.userservice.components.configure.feign.ImageFeign;
+import com.netflix_clone.userservice.components.configure.rabbit.RabbitPublisher;
+import com.netflix_clone.userservice.components.delegate.ImageDelegate;
+import com.netflix_clone.userservice.components.enums.FileType;
+import com.netflix_clone.userservice.components.exceptions.BecauseOf;
+import com.netflix_clone.userservice.components.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.deviceRepository.DeviceRepository;
 import com.netflix_clone.userservice.repository.domains.MobileDeviceInfo;
 import com.netflix_clone.userservice.repository.domains.Profile;

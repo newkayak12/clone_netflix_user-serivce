@@ -1,6 +1,6 @@
 package com.netflix_clone.userservice.repository.dto.reference;
 
-import com.netflix_clone.userservice.enums.FileType;
+import com.netflix_clone.userservice.components.enums.FileType;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import lombok.NoArgsConstructor;

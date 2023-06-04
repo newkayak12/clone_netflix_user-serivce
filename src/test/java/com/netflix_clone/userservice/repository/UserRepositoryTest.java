@@ -1,6 +1,6 @@
 package com.netflix_clone.userservice.repository;
 
-import com.netflix_clone.userservice.exceptions.BecauseOf;
+import com.netflix_clone.userservice.components.exceptions.BecauseOf;
 import com.netflix_clone.userservice.repository.dto.request.SignInRequest;
 import com.netflix_clone.userservice.repository.userRepository.UserRepository;
 import org.junit.jupiter.api.DisplayName;

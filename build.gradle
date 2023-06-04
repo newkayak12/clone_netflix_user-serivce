@@ -27,6 +27,7 @@ configurations {
 repositories {
     mavenCentral()
     mavenLocal()
+    maven { url 'https://jitpack.io' }
 }
 
 ext {
@@ -71,6 +72,8 @@ dependencies {
 //DateTime jackson.datatype.binder
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
+//    TOKEN
+    implementation 'com.github.newkayak12:Dependency-Token:1.0.5'
 }
 
 

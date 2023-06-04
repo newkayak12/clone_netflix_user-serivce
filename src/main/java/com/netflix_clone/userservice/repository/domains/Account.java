@@ -1,6 +1,11 @@
 package com.netflix_clone.userservice.repository.domains;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +17,9 @@ import java.util.List;
  */
 @Table(name = "account")
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Account implements Serializable {
     @Id
     @Column(name = "userNo", columnDefinition = "BIGINT(20)")

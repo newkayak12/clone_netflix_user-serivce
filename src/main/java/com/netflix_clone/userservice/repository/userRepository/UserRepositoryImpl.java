@@ -43,7 +43,6 @@ public class UserRepositoryImpl extends QuerydslRepositorySupport implements Use
                         account.lastSignDate
                 ))
                 .from(account)
-                .leftJoin(profile)
                 .where(account.userId.eq(accountDto.getUserId()))
                 .fetchOne();
     }
