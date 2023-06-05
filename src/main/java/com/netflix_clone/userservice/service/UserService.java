@@ -7,6 +7,7 @@ import com.netflix_clone.userservice.repository.domains.Account;
 import com.netflix_clone.userservice.repository.dto.reference.AccountDto;
 import com.netflix_clone.userservice.repository.dto.reference.TicketRaiseLogDto;
 import com.netflix_clone.userservice.repository.dto.request.ChangePasswordRequest;
+import com.netflix_clone.userservice.repository.dto.request.FindAccountRequest;
 import com.netflix_clone.userservice.repository.dto.request.SignInRequest;
 import com.netflix_clone.userservice.repository.dto.request.SignUpRequest;
 import com.netflix_clone.userservice.repository.ticketRaiseRepository.TicketRaiseRepository;
@@ -69,8 +70,8 @@ public class UserService {
         encryptPassword(dto);
 
         Account account = mapper.map(dto, Account.class);
-        dto = mapper.map(repository.save(account), AccountDto.class);
-
+        account = repository.save(account);
+        dto = mapper.map(account, AccountDto.class);
 
         response.addHeader(Constants.TOKEN_NAME, tokenControl.encrypt(dto));
         return dto;
@@ -83,12 +84,16 @@ public class UserService {
 
         changePasswordRequest.setUserNo(dto.getUserNo());
 
-        if(
-                isPasswordMatched(changePasswordRequest.getUserPwd(), dto.getUserPwd()) &&
-                !repository.changePassword(changePasswordRequest)
-        ) throw  new CommonException(BecauseOf.UPDATE_FAILURE);
+        if(!isPasswordMatched(changePasswordRequest.getUserPwd(), dto.getUserPwd()) ) throw new CommonException(BecauseOf.PASSWORD_NOT_MATCHED);
+        if(!repository.changePassword(changePasswordRequest)) throw  new CommonException(BecauseOf.UPDATE_FAILURE);
 
 
         return true;
+    }
+
+    public String findId(FindAccountRequest request) throws CommonException {
+        return repository.findAccountByEmailAndMobileNo( request.getEmail(), request.getMobileNo() )
+                                   .map(Account::getUserId)
+                                   .orElseThrow(() -> new CommonException(BecauseOf.NO_DATA));
     }
 }

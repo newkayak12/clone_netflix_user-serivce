@@ -1,8 +1,8 @@
 package com.netflix_clone.userservice.repository.domains;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@Getter
 public class Account implements Serializable {
     @Id
     @Column(name = "userNo", columnDefinition = "BIGINT(20)")
@@ -32,6 +32,7 @@ public class Account implements Serializable {
     @Column(name = "regDate", columnDefinition = "DATETIME default CURRENT_TIMESTAMP()")
     private LocalDateTime regDate;
     @Column(name = "isAdult", columnDefinition = "BIT(1) default FALSE")
+    @ColumnDefault(value = "false")
     private Boolean isAdult;
     @Column(name = "adultCheckDate", columnDefinition = "DATETIME")
     private LocalDateTime adultCheckDate;

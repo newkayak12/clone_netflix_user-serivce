@@ -35,6 +35,7 @@ public class UserControllerTest {
     private final String checkId = prefix+"/check/id/";
     private final String signUp = prefix+"/sign/up";
     private final String changePassword = prefix+"/change/password";
+    private final String findId = prefix+"/find/id/";
 
     @Autowired
     private MockMvc mockMvc;
@@ -145,5 +146,35 @@ public class UserControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().string("true"))
         .andDo(print());
+    }
+
+    @Nested
+    @DisplayName(value = "아이디 찾기")
+    public class FindId {
+        @Test
+        @DisplayName(value = "성공")
+        public void success() throws Exception {
+            mockMvc.perform(
+                    get(findId)
+                    .param("email", "test@test.com")
+                    .param("mobileNo", "01012341234")
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().string("test"))
+            .andDo(print());
+        }
+
+        @Test
+        @DisplayName(value = "실패")
+        public void failure() throws Exception {
+            mockMvc.perform(
+                            get(findId)
+                                    .param("email", "test12@test.com")
+                                    .param("mobileNo", "01012341234")
+                    )
+                    .andExpect(status().is5xxServerError())
+                    .andExpect(content().string(BecauseOf.NO_DATA.getMsg()))
+                    .andDo(print());
+        }
     }
 }

@@ -42,6 +42,7 @@ dependencies {
 
 //Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mockito:mockito-inline'
     testImplementation 'org.assertj:assertj-core:3.23.1'
 
 //SpringBoot Starter
@@ -73,7 +74,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
 //    TOKEN
-    implementation 'com.github.newkayak12:Dependency-Token:1.0.5'
+    implementation 'com.github.newkayak12:Dependency-Token:1.0.6'
 }
 
 

@@ -3,6 +3,7 @@ package com.netflix_clone.userservice.controller;
 import com.netflix_clone.userservice.components.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.dto.reference.AccountDto;
 import com.netflix_clone.userservice.repository.dto.request.ChangePasswordRequest;
+import com.netflix_clone.userservice.repository.dto.request.FindAccountRequest;
 import com.netflix_clone.userservice.repository.dto.request.SignInRequest;
 import com.netflix_clone.userservice.repository.dto.request.SignUpRequest;
 import com.netflix_clone.userservice.service.UserService;
@@ -51,5 +52,10 @@ public class UserController {
         return new ResponseEntity<>(service.changePassword(changePasswordRequest), HttpStatus.OK);
     }
 
-    // TODO - find id, find pwd
+    @GetMapping(value = "/find/id/")
+    public ResponseEntity<String> findId(@ModelAttribute @Valid @Validated(value = {AccountValid.FindId.class})
+                                         FindAccountRequest request) throws CommonException {
+        return new ResponseEntity<>(service.findId(request), HttpStatus.OK);
+    }
+    // TODO - find pwd
 }
