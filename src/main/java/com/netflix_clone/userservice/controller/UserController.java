@@ -8,6 +8,7 @@ import com.netflix_clone.userservice.repository.dto.request.SignInRequest;
 import com.netflix_clone.userservice.repository.dto.request.SignUpRequest;
 import com.netflix_clone.userservice.service.UserService;
 import com.netflix_clone.userservice.components.validations.AccountValid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,4 +59,10 @@ public class UserController {
         return new ResponseEntity<>(service.findId(request), HttpStatus.OK);
     }
     // TODO - find pwd
+
+    @GetMapping(value = "/find/password")
+    public ResponseEntity<Boolean> findPassword(@ModelAttribute @Valid @Validated(value = {AccountValid.FindPwd.class})
+                                                FindAccountRequest request ) {
+        return new ResponseEntity<>(service.findPassword(request), HttpStatus.OK);
+    }
 }

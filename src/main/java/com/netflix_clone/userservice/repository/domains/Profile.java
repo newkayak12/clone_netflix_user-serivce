@@ -1,5 +1,8 @@
 package com.netflix_clone.userservice.repository.domains;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -8,6 +11,10 @@ import java.time.LocalDateTime;
  * Created on 2023-05-10
  * Project user-service
  */
+
+import org.hibernate.annotations.Cache;
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "profile")
 @Entity
 public class Profile implements Serializable {

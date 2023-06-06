@@ -1,11 +1,12 @@
 package com.netflix_clone.userservice.repository.domains;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.stereotype.Service;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,11 +16,12 @@ import java.util.List;
  * Created on 2023-05-10
  * Project user-service
  */
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "account")
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
+@NoArgsConstructor
 public class Account implements Serializable {
     @Id
     @Column(name = "userNo", columnDefinition = "BIGINT(20)")
@@ -45,7 +47,7 @@ public class Account implements Serializable {
     @Column(name = "lastSignDate", columnDefinition = "DATETIME")
     private LocalDateTime lastSignDate;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<Profile> profiles = new ArrayList<>();
 
     @PostLoad

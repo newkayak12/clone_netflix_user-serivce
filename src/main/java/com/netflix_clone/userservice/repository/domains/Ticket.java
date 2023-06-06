@@ -11,8 +11,16 @@ import java.math.BigInteger;
  * Created on 2023-05-10
  * Project user-service
  */
+import lombok.Getter;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "ticket")
 @Entity
+@Getter
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

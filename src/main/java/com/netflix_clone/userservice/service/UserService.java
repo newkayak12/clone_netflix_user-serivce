@@ -96,4 +96,8 @@ public class UserService {
                                    .map(Account::getUserId)
                                    .orElseThrow(() -> new CommonException(BecauseOf.NO_DATA));
     }
+
+    public Boolean findPassword(FindAccountRequest request) {
+        return true;
+    }
 }

@@ -7,6 +7,7 @@ import com.netflix_clone.userservice.components.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.domains.Account;
 import com.netflix_clone.userservice.repository.dto.reference.AccountDto;
 import com.netflix_clone.userservice.repository.dto.request.ChangePasswordRequest;
+import com.netflix_clone.userservice.repository.dto.request.FindAccountRequest;
 import com.netflix_clone.userservice.repository.dto.request.SignInRequest;
 import com.netflix_clone.userservice.repository.dto.request.SignUpRequest;
 import com.netflix_clone.userservice.repository.ticketRaiseRepository.TicketRaiseRepository;
@@ -312,7 +313,49 @@ public class UserServiceTest {
 
     }
 
+    @Nested
+    @DisplayName(value = "아이디 찾기")
     public class FindIdTest {
+        private FindAccountRequest findAccountRequest;
+        private Account account;
+        private String id = "test";
+        private String phone = "01012341234";
+        private String email = "test@test.com";
 
+        @BeforeEach
+        public void setFindAccountRequest() {
+            this.findAccountRequest = new FindAccountRequest();
+            this.findAccountRequest.setEmail(email);
+            this.findAccountRequest.setMobileNo(phone);
+            AccountDto dto = new AccountDto();
+            dto.setUserId(this.id);
+            this.account = mapper.map(dto, Account.class);
+        }
+
+        @Test
+        @DisplayName(value = "성공")
+        public void success() throws CommonException {
+            //given
+            //when
+            doReturn(Optional.ofNullable(account))
+            .when(repository)
+            .findAccountByEmailAndMobileNo(email, phone);
+            //then
+            assertThat(service.findId(findAccountRequest)).isEqualTo(id);
+        }
+        @Test
+        @DisplayName(value = "실패")
+        public void failure() throws CommonException {
+            //given
+            //when
+            doReturn(Optional.ofNullable(null))
+                    .when(repository)
+                    .findAccountByEmailAndMobileNo(email, phone);
+            //then
+            assertThatThrownBy(() -> service.findId(findAccountRequest))
+                    .message()
+                    .isEqualTo(BecauseOf.NO_DATA.getMsg());
+
+        }
     }
 }

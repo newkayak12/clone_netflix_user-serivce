@@ -16,12 +16,15 @@ import java.util.List;
  * Project user-service
  */
 @Qualifier(value = "image")
-@FeignClient(name = "netflix-clone-image-service")
+@FeignClient("netflix-clone-file-service")
 public interface ImageFeign {
+
+    @GetMapping(value = "/api/v1/files/test")
+    String test();
 
     @PostMapping(value = "/save", produces = {MediaType.MULTIPART_FORM_DATA_VALUE})
     ResponseEntity<List<FileDto>> save(@RequestPart(value = "requestList") List<FileRequest> requestList);
-    @GetMapping(value = "/{tableNo}/{fileType}")
+    @GetMapping(value = "/{tableNo}/{fileType}/mono")
     public ResponseEntity<FileDto> file(@PathVariable(name = "tableNo") Long tableNo, @PathVariable(name = "fileType") FileType fileType);
     @GetMapping(value = "/{tableNo}/{fileType}")
     public ResponseEntity<List<FileDto>> files(@PathVariable(name = "tableNo") Long tableNo, @PathVariable(name = "fileType") FileType fileType);
