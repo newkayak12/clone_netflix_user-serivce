@@ -2,75 +2,71 @@ package com.netflix_clone.userservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix_clone.userservice.components.configure.feign.ImageFeign;
-import com.netflix_clone.userservice.repository.dto.reference.FileDto;
+import com.netflix_clone.userservice.components.enums.FileType;
+import com.netflix_clone.userservice.components.enums.Resolution;
+import com.netflix_clone.userservice.components.enums.TicketType;
+import com.netflix_clone.userservice.repository.dto.reference.TicketDto;
+import com.netflix_clone.userservice.repository.dto.request.TicketSaveRequest;
+import com.netflix_clone.userservice.util.AbstractControllerTest;
+import com.netflix_clone.userservice.util.TestUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.Arrays;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @EnableConfigurationProperties
 @ActiveProfiles(value = {"local"})
-public class TicketControllerTest {
+public class TicketControllerTest extends AbstractControllerTest {
 
     private final String prefix = "/api/v1/ticket";
-    private final String tickets = prefix + "/";
-    private final String ticket = prefix + "/";
+
     private final String save = prefix + "/save";
-
-    @Mock
+    @Spy
     private ImageFeign imageFeign;
-
-
-    @Autowired
-    private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper mapper;
 
 
     @Nested
-    @DisplayName("티켓 등록 테스트")
-    @Transactional
-    @Rollback(value = true)
-    public class TicketSaveTest {
+    @DisplayName("티켓 테스트")
+    public class TicketTest {
         @Test
-        @DisplayName(value = "성공")
-        public void success () throws Exception {
+        @DisplayName(value = "등록")
+        @Transactional
+        @Rollback
+        public void register () throws Exception {
             InputStream inputStream = new FileInputStream("/Users/sanghyeonkim/Downloads/R1280x0.png");
-            MockMultipartFile file = new MockMultipartFile("file.png", "file.png", "png", inputStream);
-
-
-            //when
-            when(imageFeign.save(anyList()))
-                    .thenReturn(new ResponseEntity<>(Arrays.asList(new FileDto()), HttpStatus.OK));
+            MockMultipartFile file = new MockMultipartFile("file", "file.png", "png", inputStream);
 
 
             mockMvc.perform(
                         multipart(save)
-                        .file(file)
-                        .queryParam("name", "BASIC")
-                        .queryParam("type", "BASIC")
+                        .file("rawFile", file.getBytes())
+                        .queryParam("name", TicketType.STANDARD.name())
+                        .queryParam("type", TicketType.STANDARD.name())
                         .queryParam("watchableSimultaneously", "1")
                         .queryParam("maximumResolution", "HD")
                         .queryParam("isSupportHDR", "false")
@@ -79,7 +75,117 @@ public class TicketControllerTest {
                         .contentType(MediaType.MULTIPART_FORM_DATA)
 
                     )
+            .andExpect(content().string("true"))
             .andDo(print());
         }
+
+        @ParameterizedTest
+        @CsvFileSource(encoding = "UTF-8", numLinesToSkip = 1, files = {"/Users/sanghyeonkim/Downloads/port/netflixClone/clone_netflix_user-serivce/src/test/resources/csv/ticket/TicketRegisterTable.csv"})
+        @DisplayName(value = "예시 등록")
+        @Transactional
+        @Rollback
+        public void parameterizedRegister(
+                String name, String type, Integer watchableSimultaneously,
+                Resolution maximumResolution, Boolean isSupportHDR,
+                Integer savableCount, BigInteger price, Boolean isActive
+        ) throws Exception {
+
+            mockMvc.perform(
+                            multipart(save)
+                                    .file(TestUtil.getMockMultiPartFile("/Users/sanghyeonkim/Downloads/R1280x0.png", "image", "rawFile"))
+                                    .queryParam("name", name)
+                                    .queryParam("type", type)
+                                    .queryParam("watchableSimultaneously",watchableSimultaneously.toString())
+                                    .queryParam("maximumResolution",maximumResolution.toString())
+                                    .queryParam("isSupportHDR",isSupportHDR.toString())
+                                    .queryParam("savableCount",savableCount.toString())
+                                    .queryParam("price", price.toString())
+                                    .queryParam("isActive", isActive.toString())
+                                    .contentType(MediaType.MULTIPART_FORM_DATA)
+                    )
+                    .andExpect(content().string("true"))
+                    .andDo(print());
+
+
+        }
+
+        @Test
+        @DisplayName(value = "수정")
+        @Transactional
+        @Rollback
+        public void modify () throws Exception {
+            MockMultipartFile file = TestUtil.getMockMultiPartFile("/Users/sanghyeonkim/Downloads/R1280x0.png", "image", "rawFile");
+            mockMvc.perform(
+                            multipart(save)
+                                    .file(file)
+                                    .queryParam("ticketNo", "83")
+                                    .queryParam("name", TicketType.STANDARD.name())
+                                    .queryParam("type", TicketType.STANDARD.name())
+                                    .queryParam("watchableSimultaneously", "1")
+                                    .queryParam("maximumResolution", "HD")
+                                    .queryParam("isSupportHDR", "false")
+                                    .queryParam("savableCount", "10")
+                                    .queryParam("price", "11000")
+                                    .contentType(MediaType.MULTIPART_FORM_DATA)
+
+                    )
+                    .andExpect(content().string("true"))
+                    .andDo(print());
+        }
+
+        @Test
+        @DisplayName(value = "삭제")
+        @Transactional
+        @Rollback
+        public void remove () throws Exception {
+            mockMvc.perform(
+                delete(String.format("%s/%d", prefix, 83))
+            )
+            .andExpect(content().string("true"));
+        }
     }
+
+    @DisplayName(value = "조회")
+    @Nested
+    public class FetchTicket {
+
+        @DisplayName(value = "전체 조회")
+        @Test
+        public void fetchAll() throws Exception {
+            mockMvc.perform(
+                get(String.format("%s/", prefix))
+            )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.size()").value(4))
+            .andExpect(jsonPath("$[0]").isNotEmpty())
+            .andExpect(jsonPath("$[1]").isNotEmpty())
+            .andExpect(jsonPath("$[2]").isNotEmpty())
+            .andExpect(jsonPath("$[3]").isNotEmpty());
+        }
+
+        @DisplayName(value = "단건 조회")
+        @ParameterizedTest
+        @CsvFileSource(encoding = "UTF-8", numLinesToSkip = 1, files = {"/Users/sanghyeonkim/Downloads/port/netflixClone/clone_netflix_user-serivce/src/test/resources/csv/ticket/TicketFetchedTable.csv"})
+        public void fetchOne(
+                Long ticketNo, String name, String type, Integer watchableSimultaneously,
+                String maximumResolution, Boolean isSupportHDR,
+                Integer savableCount, BigInteger price, Boolean isActive
+        ) throws Exception {
+
+            mockMvc.perform(
+                get(String.format("%s/%d", prefix, ticketNo))
+            )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.name").value(name))
+            .andExpect(jsonPath("$.type").value(type))
+            .andExpect(jsonPath("$.watchableSimultaneously").value(watchableSimultaneously))
+            .andExpect(jsonPath("$.maximumResolution").value(maximumResolution))
+            .andExpect(jsonPath("$.isSupportHDR").value(isSupportHDR))
+            .andExpect(jsonPath("$.savableCount").value(savableCount))
+            .andExpect(jsonPath("$.price").value(price))
+            .andExpect(jsonPath("$.isActive").value(isActive))
+            .andExpect(jsonPath("$.image").isNotEmpty());
+        }
+    }
+
 }

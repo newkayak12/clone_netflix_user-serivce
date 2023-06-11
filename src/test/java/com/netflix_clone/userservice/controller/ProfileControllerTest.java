@@ -1,4 +1,6 @@
 package com.netflix_clone.userservice.controller;
 
-public class ProfileControllerTest {
+import com.netflix_clone.userservice.util.AbstractControllerTest;
+
+public class ProfileControllerTest extends AbstractControllerTest {
 }

@@ -16,6 +16,6 @@ import javax.annotation.PostConstruct;
 public class Config implements ConfigMsg {
     @PostConstruct
     public void enabled (){
-        msg("Eureka");
+        this.msg("Eureka");
     }
 }

@@ -14,6 +14,7 @@ import java.math.BigInteger;
 import lombok.Getter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Cacheable
@@ -42,4 +43,7 @@ public class Ticket {
     private Integer savableCount;
     @Column(name = "price", columnDefinition = "DECIMAL(19)")
     private BigInteger price;
+    @Column(name = "isActive", columnDefinition = "BIT(1)")
+    @ColumnDefault(value = "FALSE")
+    private Boolean isActive;
 }

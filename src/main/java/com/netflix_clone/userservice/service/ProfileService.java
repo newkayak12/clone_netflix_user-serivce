@@ -4,6 +4,7 @@ import com.netflix_clone.userservice.components.configure.feign.ImageFeign;
 import com.netflix_clone.userservice.components.configure.rabbit.RabbitPublisher;
 import com.netflix_clone.userservice.components.delegate.ImageDelegate;
 import com.netflix_clone.userservice.components.enums.FileType;
+import com.netflix_clone.userservice.components.enums.Rabbit;
 import com.netflix_clone.userservice.components.exceptions.BecauseOf;
 import com.netflix_clone.userservice.components.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.deviceRepository.DeviceRepository;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -96,14 +98,11 @@ public class ProfileService {
         FileRequest fileRequest = new FileRequest();
 
         fileRequest.setRawFile(profileImageRequest.getRawFile());
-        fileRequest.setFileType(FileType.PROFILE);
+        fileRequest.setFileType(FileType.PROFILE.name());
         if( Objects.nonNull(profileImageRequest.getProfileNo()) ) fileRequest.setFileNo(profileImageRequest.getProfileNo());
 
-        FileDto result = imageFeign.save(Arrays.asList(fileRequest))
-                                   .getBody()
-                                   .stream()
-                                   .findAny()
-                                   .orElseThrow(() -> new CommonException(BecauseOf.UPDATE_FAILURE));
+        FileDto result = Optional.ofNullable(imageFeign.save(fileRequest).getBody())
+                                 .orElseThrow(() -> new CommonException(BecauseOf.UPDATE_FAILURE));
 
         return result;
     }
@@ -125,10 +124,10 @@ public class ProfileService {
             FileRequest request = new FileRequest();
             request.setRawFile(profileSaveRequest.getRawFile());
             request.setTableNo(profileNo);
-            request.setFileType(FileType.PROFILE);
+            request.setFileType(FileType.PROFILE.name());
 
-            FileDto fileDto = imageFeign.save(Arrays.asList(request)).getBody().stream().findAny().orElseGet(() -> null);
-            result.setImage(fileDto);
+            FileDto fileDto = Optional.ofNullable(imageFeign.save(request).getBody()).orElseGet(() -> null);
+            result.setImage(null);
         }
 
 //        rabbitPublisher.send(Rabbit.Topic.USER.getName(), Rabbit.RoutingKey.PROFILE_SAVE.name(), result);

@@ -31,10 +31,12 @@ public class TicketRepositoryImpl extends QuerydslRepositorySupport implements T
                             ticket.maximumResolution,
                             ticket.isSupportHDR,
                             ticket.savableCount,
-                            ticket.price
+                            ticket.price,
+                            ticket.isActive
                     )
                 )
                 .from(ticket)
+                .where(ticket.isActive.isTrue())
                 .fetch();
     }
 
@@ -49,10 +51,22 @@ public class TicketRepositoryImpl extends QuerydslRepositorySupport implements T
                                      ticket.maximumResolution,
                                      ticket.isSupportHDR,
                                      ticket.savableCount,
-                                     ticket.price
+                                     ticket.price,
+                                     ticket.isActive
                              )
                      )
                      .from(ticket)
+                     .where(
+                             ticket.isActive.isTrue()
+                         .and(ticket.ticketNo.eq(ticketNo))
+                     )
                      .fetchOne();
+    }
+
+    @Override
+    public Boolean remove(Long ticketNo) {
+        return query.update(ticket)
+                .set(ticket.isActive, false)
+                .where(ticket.ticketNo.eq(ticketNo)).execute() > 0;
     }
 }

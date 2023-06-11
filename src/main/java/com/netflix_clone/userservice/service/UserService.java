@@ -1,6 +1,8 @@
 package com.netflix_clone.userservice.service;
 
 import com.netflix_clone.userservice.components.constants.Constants;
+import com.netflix_clone.userservice.components.delegate.EmailDelegate;
+import com.netflix_clone.userservice.components.delegate.PasswordDelegate;
 import com.netflix_clone.userservice.components.exceptions.BecauseOf;
 import com.netflix_clone.userservice.components.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.domains.Account;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tokenManager.TokenControl;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,6 +38,9 @@ public class UserService {
     private final ModelMapper mapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final TokenControl tokenControl;
+    private final PasswordDelegate passwordDelegate;
+    private final EmailDelegate emailDelegate;
+
 
 
     private Boolean isPasswordMatched(String rawPassword, String encryptedPassword) {
@@ -97,7 +103,20 @@ public class UserService {
                                    .orElseThrow(() -> new CommonException(BecauseOf.NO_DATA));
     }
 
-    public Boolean findPassword(FindAccountRequest request) {
-        return true;
+    public Boolean findPassword(FindAccountRequest request) throws CommonException {
+        AccountDto accountDto = repository.findAccountByUserIdAndEmailAndMobileNo(
+                request.getUserId(), request.getEmail(), request.getMobileNo()
+        )
+        .map(account -> mapper.map(account, AccountDto.class))
+        .orElseThrow(() -> new CommonException(BecauseOf.NO_DATA) );
+
+        String resetPassword = passwordDelegate.getNewResetPassword();
+        String encodedPassword = bCryptPasswordEncoder.encode(resetPassword);
+
+        accountDto.setUserPwd(encodedPassword);
+        Optional<Account> result = Optional.ofNullable(repository.save(mapper.map(accountDto, Account.class)));
+
+        if(result.isPresent() && emailDelegate.send(accountDto.getEmail(), resetPassword)) return true;
+        else throw new CommonException(BecauseOf.UPDATE_FAILURE);
     }
 }

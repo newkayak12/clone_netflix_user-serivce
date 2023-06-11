@@ -33,7 +33,8 @@ public class TicketRaiseRepositoryImpl extends QuerydslRepositorySupport impleme
                         ticket.maximumResolution,
                         ticket.isSupportHDR,
                         ticket.savableCount,
-                        ticket.price
+                        ticket.price,
+                        ticket.isActive
                 ),
                 ticketRaiseLog.startDate,
                 ticketRaiseLog.endDate,

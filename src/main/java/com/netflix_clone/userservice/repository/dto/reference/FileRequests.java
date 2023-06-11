@@ -1,6 +1,5 @@
 package com.netflix_clone.userservice.repository.dto.reference;
 
-import com.netflix_clone.userservice.components.enums.FileType;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class FileRequest {
+public class FileRequests {
     private Long fileNo;
     private Long tableNo;
     private String fileType;
@@ -24,6 +23,6 @@ public class FileRequest {
     private Integer orders;
     private String contentType;
     private Long fileSize;
-    private MultipartFile rawFile;
+    private List<MultipartFile> rawFiles;
 
 }

@@ -3,6 +3,7 @@ package com.netflix_clone.userservice.repository.dto.reference;
 import com.netflix_clone.userservice.components.enums.Resolution;
 import com.netflix_clone.userservice.components.enums.TicketType;
 import com.querydsl.core.annotations.QueryProjection;
+import com.sun.mail.imap.protocol.BODY;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class TicketDto implements Serializable {
     private Boolean isSupportHDR;
     private Integer savableCount;
     private BigInteger price;
+    private Boolean isActive;
 
     @Transient
     private FileDto image;
@@ -34,7 +36,8 @@ public class TicketDto implements Serializable {
     @QueryProjection
     public TicketDto(Long ticketNo, String name, TicketType type,
                      Integer watchableSimultaneously, Resolution maximumResolution,
-                     Boolean isSupportHDR, Integer savableCount, BigInteger price) {
+                     Boolean isSupportHDR, Integer savableCount, BigInteger price,
+                     Boolean isActive) {
         this.ticketNo = ticketNo;
         this.name = name;
         this.type = type;
@@ -43,5 +46,6 @@ public class TicketDto implements Serializable {
         this.isSupportHDR = isSupportHDR;
         this.savableCount = savableCount;
         this.price = price;
+        this.isActive = isActive;
     }
 }

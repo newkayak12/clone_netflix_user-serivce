@@ -60,9 +60,9 @@ public class UserController {
     }
     // TODO - find pwd
 
-    @GetMapping(value = "/find/password")
+    @PutMapping(value = "/find/password")
     public ResponseEntity<Boolean> findPassword(@ModelAttribute @Valid @Validated(value = {AccountValid.FindPwd.class})
-                                                FindAccountRequest request ) {
+                                                FindAccountRequest request ) throws CommonException {
         return new ResponseEntity<>(service.findPassword(request), HttpStatus.OK);
     }
 }

@@ -19,12 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TicketController {
     private final TicketService service;
-    private final ImageFeign feign;
 
-    @GetMapping(value = "/test")
-    public String test() {
-        return feign.test();
-    }
 
     @GetMapping(value = "/")
     public ResponseEntity<List<TicketDto>> tickets() {
@@ -39,6 +34,11 @@ public class TicketController {
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Boolean> save(@ModelAttribute TicketSaveRequest ticketSaveRequest) throws CommonException {
         return new ResponseEntity<>(service.save(ticketSaveRequest), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{ticketNo}")
+    public ResponseEntity<Boolean> remove(@PathVariable Long ticketNo){
+        return new ResponseEntity<>(service.remove(ticketNo), HttpStatus.OK);
     }
 
 }

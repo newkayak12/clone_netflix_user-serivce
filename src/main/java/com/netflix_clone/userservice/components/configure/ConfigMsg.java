@@ -3,6 +3,7 @@ package com.netflix_clone.userservice.components.configure;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 
 public interface ConfigMsg {

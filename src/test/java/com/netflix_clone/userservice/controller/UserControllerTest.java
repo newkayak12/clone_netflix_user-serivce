@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix_clone.userservice.components.constants.Constants;
 import com.netflix_clone.userservice.components.exceptions.BecauseOf;
 import com.netflix_clone.userservice.repository.dto.request.SignUpRequest;
+import com.netflix_clone.userservice.util.AbstractControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @AutoConfigureMockMvc
 @EnableConfigurationProperties
 @ActiveProfiles(value = {"local"})
-public class UserControllerTest {
+public class UserControllerTest extends AbstractControllerTest {
 
     private final String prefix = "/api/v1/user";
     private final String signIn = prefix+"/sign/in";
@@ -36,9 +37,8 @@ public class UserControllerTest {
     private final String signUp = prefix+"/sign/up";
     private final String changePassword = prefix+"/change/password";
     private final String findId = prefix+"/find/id/";
+    private final String findPassword = prefix+"/find/password/";
 
-    @Autowired
-    private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper mapper;
@@ -175,6 +175,38 @@ public class UserControllerTest {
                     .andExpect(status().is5xxServerError())
                     .andExpect(content().string(BecauseOf.NO_DATA.getMsg()))
                     .andDo(print());
+        }
+    }
+
+    @Nested
+    @DisplayName(value = "비밀번호 찾기")
+    public class FindPassword {
+        @DisplayName(value = "성공")
+        @Test
+        @Transactional
+        @Rollback
+        public void success () throws Exception {
+            mockMvc.perform(
+                put(findPassword)
+                .queryParam("userId", "test")
+                .queryParam("email", "newkayak12@gmail.com")
+                .queryParam("mobileNo", "01012341234")
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().string("true"));
+        }
+
+        @DisplayName(value = "실패")
+        @Test
+        public void failure () throws Exception {
+            mockMvc.perform(
+                            put(findPassword)
+                                    .queryParam("userId", "test")
+                                    .queryParam("email", "test@test.com")
+                                    .queryParam("mobileNo", "01012341234")
+                    )
+                    .andExpect(status().is5xxServerError())
+                    .andExpect(content().string(BecauseOf.NO_DATA.getMsg()));
         }
     }
 }
