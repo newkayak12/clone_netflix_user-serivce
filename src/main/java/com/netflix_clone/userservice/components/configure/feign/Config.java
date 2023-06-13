@@ -14,12 +14,11 @@ import javax.annotation.PostConstruct;
  */
 @Configuration(value = "feign_configuration")
 @EnableFeignClients
-public class Config implements ConfigMsg {
+public class Config {
     @PostConstruct
-    public void enabled (){
-        msg("Feign");
+    public void enabled(){
+        ConfigMsg.msg("Feign");
     }
-
     @Bean
     Logger.Level loggerLevel () {
         return Logger.Level.FULL;

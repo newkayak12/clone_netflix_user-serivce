@@ -13,9 +13,11 @@ import javax.annotation.PostConstruct;
  */
 @Configuration (value = "eureka_configuration")
 @EnableEurekaClient
-public class Config implements ConfigMsg {
+public class Config {
+
+
     @PostConstruct
     public void enabled (){
-        this.msg("Eureka");
+        ConfigMsg.msg("Eureka");
     }
 }

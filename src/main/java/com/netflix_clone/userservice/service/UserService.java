@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tokenManager.TokenControl;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
@@ -116,7 +115,7 @@ public class UserService {
         accountDto.setUserPwd(encodedPassword);
         Optional<Account> result = Optional.ofNullable(repository.save(mapper.map(accountDto, Account.class)));
 
-        if(result.isPresent() && emailDelegate.send(accountDto.getEmail(), resetPassword)) return true;
+        if(result.isPresent() && emailDelegate.sendPasswordReset(accountDto.getEmail(), resetPassword)) return true;
         else throw new CommonException(BecauseOf.UPDATE_FAILURE);
     }
 }

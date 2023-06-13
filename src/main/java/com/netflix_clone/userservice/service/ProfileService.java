@@ -127,7 +127,7 @@ public class ProfileService {
             request.setFileType(FileType.PROFILE.name());
 
             FileDto fileDto = Optional.ofNullable(imageFeign.save(request).getBody()).orElseGet(() -> null);
-            result.setImage(null);
+            result.setImage(fileDto);
         }
 
 //        rabbitPublisher.send(Rabbit.Topic.USER.getName(), Rabbit.RoutingKey.PROFILE_SAVE.name(), result);

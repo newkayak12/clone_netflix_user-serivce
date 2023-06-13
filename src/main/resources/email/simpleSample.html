@@ -4,13 +4,22 @@
     <meta charset="UTF-8">
     <title>SAMPLE</title>
 
+<style>
+    .root {
+        margin: 0 auto;
+    }
+    .text-area {
+        background-color: gainsboro;
+    }
+</style>
 
-    <h1 th:text="${title}"></h1>
-    <hr>
-    <hr>
-    <pre th:text="${text}"></pre>
 </head>
 <body>
-
+    <div class="root">
+        <h1 th:text="${title}"></h1>
+        <hr>
+        <pre class="text-area" th:text="${text}"></pre>
+        <hr>
+    </div>
 </body>
 </html>

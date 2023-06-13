@@ -1,14 +1,21 @@
 package com.netflix_clone.userservice.components.configure.token;
 
+import com.netflix_clone.userservice.components.configure.ConfigMsg;
 import com.netflix_clone.userservice.components.constants.Constants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import tokenManager.TokenControl;
 
+import javax.annotation.PostConstruct;
+
 @Configuration(value = "token_control_configuration")
 @DependsOn(value = {"constants"})
 public class Config {
+    @PostConstruct
+    public void enabled(){
+        ConfigMsg.msg("TokenControl");
+    }
 
     @Bean
     public TokenControl tokenControl () {

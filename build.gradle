@@ -85,8 +85,7 @@ dependencies {
 
 //    TOKEN
     implementation 'com.github.newkayak12:Dependency-Token:1.0.6'
-    implementation 'com.github.newkayak12:Dependency-EmailSender:1.0.1'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.7.7'
+    implementation 'com.github.newkayak12:Dependency-EmailSender:1.0.0'
 }
 
 

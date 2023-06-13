@@ -1,16 +1,24 @@
 package com.netflix_clone.userservice.components.configure.rabbit;
 
+import com.netflix_clone.userservice.components.configure.ConfigMsg;
 import com.netflix_clone.userservice.components.enums.Rabbit;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
+
 @Configuration(value = "rabbit_configuration")
 public class Config {
     private final String queueName = Rabbit.Queue.USER.getName();
     private final String topicExchangeName = Rabbit.Topic.USER.getName();
 
+
+    @PostConstruct
+    public void enabled(){
+        ConfigMsg.msg("RabbitMQ");
+    }
     @Bean
     public Queue queue() {
         return new Queue(queueName, false);

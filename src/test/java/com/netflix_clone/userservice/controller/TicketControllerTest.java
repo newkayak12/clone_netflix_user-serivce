@@ -2,11 +2,8 @@ package com.netflix_clone.userservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix_clone.userservice.components.configure.feign.ImageFeign;
-import com.netflix_clone.userservice.components.enums.FileType;
 import com.netflix_clone.userservice.components.enums.Resolution;
 import com.netflix_clone.userservice.components.enums.TicketType;
-import com.netflix_clone.userservice.repository.dto.reference.TicketDto;
-import com.netflix_clone.userservice.repository.dto.request.TicketSaveRequest;
 import com.netflix_clone.userservice.util.AbstractControllerTest;
 import com.netflix_clone.userservice.util.TestUtil;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +11,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -29,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

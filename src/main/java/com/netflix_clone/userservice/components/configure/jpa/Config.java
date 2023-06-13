@@ -12,9 +12,9 @@ import javax.annotation.PostConstruct;
  */
 @Configuration(value = "jpa_configuration")
 @EnableJpaAuditing
-public class Config implements ConfigMsg {
+public class Config {
     @PostConstruct
-    public void msg(){
-        this.msg("JPA");
+    public void enabled(){
+        ConfigMsg.msg("Jpa");
     }
 }

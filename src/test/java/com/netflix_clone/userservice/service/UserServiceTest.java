@@ -1,7 +1,8 @@
 package com.netflix_clone.userservice.service;
 
-import com.netflix_clone.userservice.components.configure.jpa.Config;
 import com.netflix_clone.userservice.components.constants.Constants;
+import com.netflix_clone.userservice.components.delegate.EmailDelegate;
+import com.netflix_clone.userservice.components.delegate.PasswordDelegate;
 import com.netflix_clone.userservice.components.exceptions.BecauseOf;
 import com.netflix_clone.userservice.components.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.domains.Account;
@@ -12,7 +13,6 @@ import com.netflix_clone.userservice.repository.dto.request.SignInRequest;
 import com.netflix_clone.userservice.repository.dto.request.SignUpRequest;
 import com.netflix_clone.userservice.repository.ticketRaiseRepository.TicketRaiseRepository;
 import com.netflix_clone.userservice.repository.userRepository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -25,21 +25,21 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import tokenManager.TokenControl;
 
 import javax.servlet.http.HttpServletResponse;
-
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -56,10 +56,14 @@ public class UserServiceTest {
     private ModelMapper mapper;
     @Mock
     private HttpServletResponse response;
-    @Mock
+    @Spy
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Mock
     private TokenControl control;
+    @Spy
+    private PasswordDelegate passwordDelegate;
+    @Mock
+    private EmailDelegate emailDelegate;
 
     @BeforeEach
     public void setProperties() {
@@ -355,6 +359,77 @@ public class UserServiceTest {
             assertThatThrownBy(() -> service.findId(findAccountRequest))
                     .message()
                     .isEqualTo(BecauseOf.NO_DATA.getMsg());
+
+        }
+    }
+
+    @Nested
+    @DisplayName(value = "비밀번호 찾기")
+    public class FindPasswordTest {
+        private FindAccountRequest findAccountRequest;
+        private String id = "test";
+        private String phone = "01012341234";
+        private String email = "test@test.com";
+
+        @BeforeEach
+        public void setFindAccountRequest() {
+            this.findAccountRequest = new FindAccountRequest();
+            this.findAccountRequest.setEmail(email);
+            this.findAccountRequest.setMobileNo(phone);
+            this.findAccountRequest.setUserId(id);
+        }
+
+
+        @Test
+        @DisplayName(value = "success")
+        public void success() throws CommonException {
+            //given
+            AccountDto accountDto = new AccountDto();
+            accountDto.setUserNo(22L);
+            accountDto.setUserId("test");
+            accountDto.setUserPwd("$2a$10$7Ti7tDKkCZfDdbpHgVnQGuUZrbyGcHflYGtUlSiDVesI/jt.lIysS");
+            accountDto.setRegDate(LocalDateTime.parse("2023-06-04T22:28:52"));
+            accountDto.setIsAdult(false);
+            accountDto.setMobileNo("01012341234");
+            accountDto.setEmail("newkayak12@gmail.com");
+            accountDto.setIsSubscribed(false);
+            accountDto.setLastSignDate(LocalDateTime.parse("2023-06-05T20:26:41"));
+            Account accountGiven = mapper.map(accountDto, Account.class);
+
+            //when
+            doReturn(Optional.of(accountGiven)).when(repository).findAccountByUserIdAndEmailAndMobileNo(id, email, phone);
+            doReturn(new Account()).when(repository).save(any(Account.class));
+            when(emailDelegate.sendPasswordReset(anyString(), anyString())).thenReturn(true);
+
+            //then
+            assertThat(service.findPassword(findAccountRequest))
+                    .isEqualTo(true);
+        }
+
+        @Test
+        @DisplayName(value = "failure")
+        public void failure() throws CommonException {
+            //given
+            AccountDto accountDto = new AccountDto();
+            accountDto.setUserNo(22L);
+            accountDto.setUserId("test");
+            accountDto.setUserPwd("$2a$10$7Ti7tDKkCZfDdbpHgVnQGuUZrbyGcHflYGtUlSiDVesI/jt.lIysS");
+            accountDto.setRegDate(LocalDateTime.parse("2023-06-04T22:28:52"));
+            accountDto.setIsAdult(false);
+            accountDto.setMobileNo("01012341234");
+            accountDto.setEmail("newkayak12@gmail.com");
+            accountDto.setIsSubscribed(false);
+            accountDto.setLastSignDate(LocalDateTime.parse("2023-06-05T20:26:41"));
+            Account accountGiven = mapper.map(accountDto, Account.class);
+
+            //when
+            doReturn(Optional.of(accountGiven)).when(repository).findAccountByUserIdAndEmailAndMobileNo(id, email, phone);
+            doReturn(new Account()).when(repository).save(any(Account.class));
+            when(emailDelegate.sendPasswordReset(anyString(), anyString())).thenReturn(false);
+
+            //then
+            assertThatThrownBy(()->service.findPassword(findAccountRequest))
+                    .message().isEqualTo(BecauseOf.UPDATE_FAILURE.getMsg());
 
         }
     }
