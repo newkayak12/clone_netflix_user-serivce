@@ -9,13 +9,8 @@ import java.util.stream.Collectors;
 @Component(value = "image_delegate")
 public class ImageDelegate {
     public FileDto setImage(List<FileDto> images, Long tableNo){
-        FileDto result = null;
-
-        for ( FileDto image : images ){
-            if (tableNo.equals(image.getTableNo())) result = image;
-        }
-
-        return result;
+        System.out.println("???????" +images.stream().filter(fileDto -> fileDto.getTableNo().equals(tableNo)).findAny().orElseGet(() -> null));
+        return images.stream().filter(fileDto -> fileDto.getTableNo().equals(tableNo)).findAny().orElseGet(() -> null);
     }
     public List<FileDto> setImages( List<FileDto> images, Long tableNo) {
         return images.stream().filter(image -> image.getTableNo().equals(tableNo)).collect(Collectors.toList());

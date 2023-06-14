@@ -12,4 +12,5 @@ public interface ProfileRepositoryCustom {
 
     Boolean isChangeProfileName (ProfileModifyRequest profileNameRequest);
     Boolean isChangePushState (ProfileModifyRequest profileNameRequest);
+    Boolean removeProfile( Long profileNo );
 }

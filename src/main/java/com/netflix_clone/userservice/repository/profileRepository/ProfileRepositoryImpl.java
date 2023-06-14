@@ -68,4 +68,9 @@ public class ProfileRepositoryImpl extends QuerydslRepositorySupport implements 
                 .where(profile.profileNo.eq(profileNameRequest.getProfileNo()))
                 .execute() >= 1;
     }
+
+    @Override
+    public Boolean removeProfile(Long profileNo) {
+        return query.delete(profile).where(profile.profileNo.eq(profileNo)).execute() > 0;
+    }
 }

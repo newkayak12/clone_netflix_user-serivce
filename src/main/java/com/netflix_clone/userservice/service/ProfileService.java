@@ -63,10 +63,10 @@ public class ProfileService {
     public List<ProfileDto> profiles(ProfileRequest profileRequest) {
         List<ProfileDto> profiles = repository.profiles(profileRequest);
         if( !profiles.isEmpty() ) {
-
-            List<FileDto> images = imageFeign.files(profiles.stream().map(ProfileDto::getProfileNo) .collect(Collectors.toList()), FileType.PROFILE)
+            List<FileDto> images = imageFeign.files(profiles.stream().map(ProfileDto::getProfileNo)
+                                             .collect(Collectors.toList()), FileType.PROFILE)
                                              .getBody();
-            profiles.forEach( profile -> imageDelegate.setImage(images, profile.getProfileNo()));
+            profiles.forEach( profile -> profile.setImage( imageDelegate.setImage(images, profile.getProfileNo())));
 
         }
 
@@ -107,10 +107,13 @@ public class ProfileService {
         return result;
     }
 
-    public ProfileDto saveProfile(ProfileSaveRequest profileSaveRequest) {
+    public ProfileDto saveProfile(ProfileSaveRequest profileSaveRequest) throws CommonException {
+        if(repository.countProfileByAccount_UserNo(profileSaveRequest.getAccount().getUserNo()) >= 4)
+            throw new CommonException(BecauseOf.EXCEED_MAXIMUM_PROFILE_COUNT);
+
         Profile profile = mapper.map(profileSaveRequest, Profile.class);
         Long profileNo = mapper.map(repository.save(profile), ProfileDto.class).getProfileNo();
-        ProfileDto result = mapper.map(profile, ProfileDto.class);
+        ProfileDto result = mapper.map(repository.findByProfileNo(profileNo), ProfileDto.class);
 
         if(Objects.nonNull(profileSaveRequest.getDeviceInfo())){
             MobileDeviceInfoDto deviceInfoDto = profileSaveRequest.getDeviceInfo();
@@ -133,5 +136,13 @@ public class ProfileService {
 //        rabbitPublisher.send(Rabbit.Topic.USER.getName(), Rabbit.RoutingKey.PROFILE_SAVE.name(), result);
 
         return result;
+    }
+
+    public Boolean removeProfile(Long profileNo) {
+        if( repository.removeProfile(profileNo) ) {
+            imageFeign.remove(profileNo, FileType.PROFILE);
+            return true;
+        }
+        return false;
     }
 }

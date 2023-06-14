@@ -38,7 +38,7 @@ public class ProfileController {
     }
 
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ProfileDto> saveProfile(@ModelAttribute ProfileSaveRequest profileSaveRequest){
+    public ResponseEntity<ProfileDto> saveProfile(@ModelAttribute ProfileSaveRequest profileSaveRequest) throws CommonException {
         return new ResponseEntity<>(service.saveProfile(profileSaveRequest), HttpStatus.OK);
     }
 
@@ -57,4 +57,9 @@ public class ProfileController {
         return new ResponseEntity<FileDto>(service.changeProfileImage(profileImageRequest), HttpStatus.OK);
     }
 
+
+    @DeleteMapping(value = "/{profileNo:[\\d]+}")
+    public ResponseEntity<Boolean> removeProfile(@PathVariable Long profileNo){
+        return ResponseEntity.ok(service.removeProfile(profileNo));
+    }
 }

@@ -1,10 +1,16 @@
 package com.netflix_clone.userservice.repository.domains;
 
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import lombok.ToString;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 
 import javax.annotation.PostConstruct;
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -13,13 +19,13 @@ import java.time.LocalDateTime;
  * Project user-service
  */
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.ColumnDefault;
-
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "profile")
 @Entity
+@DynamicInsert
+@DynamicUpdate
+@ToString
 public class Profile implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,13 +43,14 @@ public class Profile implements Serializable {
     @ColumnDefault(value = "TRUE")
     private Boolean isPush;
     @Column(name = "lastSignInDate", columnDefinition = "DATETIME default CURRENT_TIMESTAMP()")
+    @ColumnDefault(value = "CURRENT_TIMESTAMP()")
     private LocalDateTime lastSignInDate;
 
 
 
-    @PostConstruct
+    @PrePersist
     public void setSignDate(){
-        this.regDate = LocalDateTime.now()
+        this.regDate = LocalDateTime.now();
     }
     @PostLoad
     public void renewLastSignInDate() {
