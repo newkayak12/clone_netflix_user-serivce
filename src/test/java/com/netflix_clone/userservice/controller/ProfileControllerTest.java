@@ -2,34 +2,26 @@ package com.netflix_clone.userservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix_clone.userservice.components.exceptions.BecauseOf;
-import com.netflix_clone.userservice.repository.dto.reference.ProfileDto;
 import com.netflix_clone.userservice.repository.dto.request.ProfileSaveRequest;
 import com.netflix_clone.userservice.util.AbstractControllerTest;
 import com.netflix_clone.userservice.util.TestUtil;
-import org.hibernate.annotations.DynamicInsert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @SpringBootTest
 @AutoConfigureMockMvc
 @EnableConfigurationProperties
@@ -42,9 +34,22 @@ public class ProfileControllerTest extends AbstractControllerTest {
     private ObjectMapper objectMapper;
 
     @Nested
-    @DisplayName(value = "프로필 리스트")
+    @DisplayName(value = "프로필")
     class Profiles {
 
+        @Test
+        @DisplayName(value = "단일")
+        public void mono () throws Exception {
+            mockMvc.perform(
+                patch(String.format("%s/%d", prefix, 18))
+            )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.profileNo").value(18))
+            .andExpect(jsonPath("$.isPush").isNotEmpty())
+            .andExpect(jsonPath("$.profileName").value("PROFILE_NUMBER_1"))
+            .andExpect(jsonPath("$.image").isNotEmpty());
+
+        }
 
         @Test
         @DisplayName(value = "리스트 없음")
@@ -152,17 +157,37 @@ public class ProfileControllerTest extends AbstractControllerTest {
     public class ModifyProfile {
         @Test
         @DisplayName(value = "프로필 이름 수정")
-        public void changeProfileName(){
-
+        public void changeProfileName() throws Exception {
+            mockMvc.perform(
+                patch(String.format("%s/%d/profileName", prefix, 18))
+                .param("profileName", "PROFILE_NUMBER_1")
+            )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").value(true));
         }
-        @Test
         @DisplayName(value = "프로필 푸시 수정")
-        public void changePushState(){
+        @ParameterizedTest
+        @ValueSource(booleans = {true, false})
+        public void changePushStatus(Boolean state) throws Exception {
+            mockMvc.perform(
+                patch(String.format("%s/%d/isPush", prefix, 18))
+                .param("isPush", state.toString())
+            )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").value(true));
 
         }
+
+
         @Test
         @DisplayName(value = "프로필 이미지 수정")
-        public void changeProfileImage(){
+        public void changeProfileImage() throws Exception {
+            mockMvc.perform(
+                multipart(String.format("%s/%d/profileImage", prefix, 18))
+                .file(TestUtil.getMockMultiPartFile("/Users/sanghyeonkim/Downloads/R1280x0.png", "image", "rawFile"))
+            )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").exists());
 
         }
 

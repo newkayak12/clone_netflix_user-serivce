@@ -5,4 +5,6 @@ public abstract class AccountValid {
     public interface SignIn {};
     public interface FindId {};
     public interface FindPwd {};
+
+    public interface changePwd {};
 }

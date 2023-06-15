@@ -2,6 +2,7 @@ package com.netflix_clone.userservice.controller;
 
 import com.netflix_clone.userservice.components.configure.feign.ImageFeign;
 import com.netflix_clone.userservice.components.exceptions.CommonException;
+import com.netflix_clone.userservice.components.validations.TicketValid;
 import com.netflix_clone.userservice.repository.dto.reference.TicketDto;
 import com.netflix_clone.userservice.repository.dto.request.TicketSaveRequest;
 import com.netflix_clone.userservice.service.TicketService;
@@ -10,8 +11,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,7 +35,8 @@ public class TicketController {
     }
 
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Boolean> save(@ModelAttribute TicketSaveRequest ticketSaveRequest) throws CommonException {
+    public ResponseEntity<Boolean> save(@ModelAttribute @Valid @Validated(value = {TicketValid.SaveTicket.class})
+                                        TicketSaveRequest ticketSaveRequest) throws CommonException {
         return new ResponseEntity<>(service.save(ticketSaveRequest), HttpStatus.OK);
     }
 

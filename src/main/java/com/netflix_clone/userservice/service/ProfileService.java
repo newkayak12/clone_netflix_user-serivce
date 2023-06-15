@@ -60,6 +60,7 @@ public class ProfileService {
     }
 
 
+    @Transactional(readOnly = true)
     public List<ProfileDto> profiles(ProfileRequest profileRequest) {
         List<ProfileDto> profiles = repository.profiles(profileRequest);
         if( !profiles.isEmpty() ) {
@@ -76,6 +77,7 @@ public class ProfileService {
 
     public ProfileDto profile(Long profileNo, MobileDeviceInfoDto mobileDeviceInfoDto) {
         ProfileDto profileDto = repository.findByProfileNo(profileNo);
+        profileDto.setImage(imageFeign.file(profileNo, FileType.PROFILE).getBody());
 
         if(Objects.nonNull(mobileDeviceInfoDto) && this.isDeviceInfoChanged(profileNo, mobileDeviceInfoDto)){
             profileDto.setDeviceInfo(this.changeDeviceInfo(profileNo, mobileDeviceInfoDto));
@@ -95,8 +97,11 @@ public class ProfileService {
     }
 
     public FileDto changeProfileImage(ProfileImageRequest profileImageRequest) throws CommonException {
-        FileRequest fileRequest = new FileRequest();
 
+        imageFeign.remove(profileImageRequest.getProfileNo(), FileType.PROFILE);
+
+        FileRequest fileRequest = new FileRequest();
+        fileRequest.setTableNo(profileImageRequest.getProfileNo());
         fileRequest.setRawFile(profileImageRequest.getRawFile());
         fileRequest.setFileType(FileType.PROFILE.name());
         if( Objects.nonNull(profileImageRequest.getProfileNo()) ) fileRequest.setFileNo(profileImageRequest.getProfileNo());

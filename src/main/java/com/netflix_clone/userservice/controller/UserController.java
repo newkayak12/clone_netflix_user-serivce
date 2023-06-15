@@ -49,7 +49,9 @@ public class UserController {
     }
 
     @PatchMapping(value = "/change/password")
-    public ResponseEntity<Boolean> changePassword(@ModelAttribute ChangePasswordRequest changePasswordRequest) throws CommonException {
+    public ResponseEntity<Boolean> changePassword(@ModelAttribute @Valid
+                                                  @Validated(value = {AccountValid.changePwd.class})
+                                                  ChangePasswordRequest changePasswordRequest) throws CommonException {
         return new ResponseEntity<>(service.changePassword(changePasswordRequest), HttpStatus.OK);
     }
 

@@ -1,5 +1,6 @@
 package com.netflix_clone.userservice.repository.dto.reference;
 
+import com.netflix_clone.userservice.components.validations.ProfileValid;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -20,6 +22,8 @@ import java.time.LocalDateTime;
 public class ProfileDto implements Serializable {
     private Long profileNo;
     private AccountDto account;
+
+    @NotEmpty(message = "프로필 이름을 입력하세요.", groups = {ProfileValid.Save.class, ProfileValid.ChangeProfileName.class})
     private String profileName;
     private LocalDateTime regDate;
     private Boolean isPush;

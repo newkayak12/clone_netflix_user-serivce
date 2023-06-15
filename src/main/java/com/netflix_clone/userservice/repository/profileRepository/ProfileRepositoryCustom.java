@@ -3,6 +3,7 @@ package com.netflix_clone.userservice.repository.profileRepository;
 import com.netflix_clone.userservice.repository.dto.reference.ProfileDto;
 import com.netflix_clone.userservice.repository.dto.request.ProfileModifyRequest;
 import com.netflix_clone.userservice.repository.dto.request.ProfileRequest;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import java.util.List;
 

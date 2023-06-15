@@ -2,6 +2,7 @@ package com.netflix_clone.userservice.repository.dto.reference;
 
 import com.netflix_clone.userservice.components.enums.Resolution;
 import com.netflix_clone.userservice.components.enums.TicketType;
+import com.netflix_clone.userservice.components.validations.TicketValid;
 import com.querydsl.core.annotations.QueryProjection;
 import com.sun.mail.imap.protocol.BODY;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.math.BigInteger;
 
@@ -21,12 +23,19 @@ import java.math.BigInteger;
 @NoArgsConstructor
 public class TicketDto implements Serializable {
     private Long ticketNo;
+    @NotEmpty(message = "요금제 이름을 입려하세요.", groups = {TicketValid.SaveTicket.class})
     private String name;
+    @NotEmpty(message = "요금제 타입을 입력하세요.", groups = {TicketValid.SaveTicket.class})
     private TicketType type;
+    @NotEmpty(message = "동시 시청 가능 인원 수를 입력하세요.", groups = {TicketValid.SaveTicket.class})
     private Integer watchableSimultaneously;
+    @NotEmpty(message = "최대 화질을 입력하세요.", groups = {TicketValid.SaveTicket.class})
     private Resolution maximumResolution;
+    @NotEmpty(message = "HDR 지원 여부를 입력하세요.", groups = {TicketValid.SaveTicket.class})
     private Boolean isSupportHDR;
+    @NotEmpty(message = "저장 가능 횟수를 입력하세요.", groups = {TicketValid.SaveTicket.class})
     private Integer savableCount;
+    @NotEmpty(message = "가격을 입력하세요.", groups = {TicketValid.SaveTicket.class})
     private BigInteger price;
     private Boolean isActive;
 
