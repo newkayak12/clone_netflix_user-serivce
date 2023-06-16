@@ -2,11 +2,12 @@ package com.netflix_clone.userservice.repository.domains;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@DynamicInsert
+@DynamicUpdate
 public class Account implements Serializable {
     @Id
     @Column(name = "userNo", columnDefinition = "BIGINT(20)")

@@ -26,7 +26,6 @@ public class TicketRaiseLogDto implements Serializable {
     private Long raiseLogNo;
     private TicketDto ticket;
     private AccountDto account;
-    private TicketPaymentLogDto ticketPaymentLog;
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean isActive;
@@ -51,5 +50,10 @@ public class TicketRaiseLogDto implements Serializable {
         this.account = account;
     }
 
+    public void init(LocalDate payDay){
+        this.startDate = payDay;
+        this.endDate = payDay.plusMonths(1);
+        this.isActive = true;
+    }
 
 }

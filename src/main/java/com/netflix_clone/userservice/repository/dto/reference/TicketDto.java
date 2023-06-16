@@ -22,8 +22,9 @@ import java.math.BigInteger;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TicketDto implements Serializable {
+    @NotEmpty(message = "요금제 정보를 입력하세요.", groups = {TicketValid.Raise.class})
     private Long ticketNo;
-    @NotEmpty(message = "요금제 이름을 입려하세요.", groups = {TicketValid.SaveTicket.class})
+    @NotEmpty(message = "요금제 이름을 입력하세요.", groups = {TicketValid.SaveTicket.class})
     private String name;
     @NotEmpty(message = "요금제 타입을 입력하세요.", groups = {TicketValid.SaveTicket.class})
     private TicketType type;

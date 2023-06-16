@@ -1,30 +1,30 @@
 package com.netflix_clone.userservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix_clone.userservice.components.configure.feign.ImageFeign;
 import com.netflix_clone.userservice.components.enums.FileType;
 import com.netflix_clone.userservice.components.exceptions.BecauseOf;
 import com.netflix_clone.userservice.components.exceptions.CommonException;
 import com.netflix_clone.userservice.repository.domains.Ticket;
-import com.netflix_clone.userservice.repository.dto.reference.FileDto;
-import com.netflix_clone.userservice.repository.dto.reference.FileRequest;
-import com.netflix_clone.userservice.repository.dto.reference.FileRequests;
-import com.netflix_clone.userservice.repository.dto.reference.TicketDto;
+import com.netflix_clone.userservice.repository.domains.TicketPaymentLog;
+import com.netflix_clone.userservice.repository.domains.TicketRaiseLog;
+import com.netflix_clone.userservice.repository.dto.reference.*;
+import com.netflix_clone.userservice.repository.dto.request.TicketRaiseRequest;
 import com.netflix_clone.userservice.repository.dto.request.TicketSaveRequest;
+import com.netflix_clone.userservice.repository.ticketPaymentLogRepository.TicketPaymentLogRepository;
+import com.netflix_clone.userservice.repository.ticketRaiseRepository.TicketRaiseRepository;
 import com.netflix_clone.userservice.repository.ticketRepostiory.TicketRepository;
 import feign.FeignException;
-import feign.form.FormData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.MediaType;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Id;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,6 +36,8 @@ import java.util.stream.Collectors;
 @Transactional(rollbackFor = Exception.class)
 public class TicketService {
     private final TicketRepository repository;
+    private final TicketPaymentLogRepository paymentLogRepository;
+    private final TicketRaiseRepository raiseRepository;
     private final ImageFeign imageFeign;
     private final ModelMapper mapper;
     private final ObjectMapper objectMapper;
@@ -92,5 +94,25 @@ public class TicketService {
         }
 
         return repository.remove(ticketNo);
+    }
+
+    public TicketDto raiseTicket(TicketRaiseRequest request) throws CommonException {
+        TicketRaiseLogDto raiseLogDto = mapper.map(request, TicketRaiseLogDto.class);
+        raiseLogDto.init(request.getPayDay());
+        raiseLogDto = mapper.map(
+                                     raiseRepository.save(mapper.map(raiseLogDto, TicketRaiseLog.class)),
+                                     TicketRaiseLogDto.class
+                                );
+        TicketPaymentLogDto dto = mapper.map(request, TicketPaymentLogDto.class);
+        dto.setRaiseLog(raiseLogDto);
+        TicketPaymentLog paymentLog = paymentLogRepository.save(mapper.map(dto, TicketPaymentLog.class));
+        if(Objects.isNull(paymentLog)) throw new CommonException(BecauseOf.PAYMENT_FAILURE);
+        return request.getTicket();
+    }
+
+    @Transactional(readOnly = true)
+    public PageImpl<TicketRaiseLogDto> raises(PageableRequest request) {
+        Pageable pageable = PageRequest.of(request.getPage(), request.getLimit());
+        return raiseRepository.raises(pageable, request);
     }
 }

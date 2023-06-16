@@ -12,7 +12,9 @@ public enum BecauseOf {
     INSERT_FAILURE("등록에 실패했습니다."),
     DELETE_FAILURE("삭제에 실패했습니다."),
     INVALID_REQUEST("잘못된 요청입니다."),
-    EXCEED_MAXIMUM_PROFILE_COUNT("프로필은 최대 4개까지 만들 수 있습니다.");
+    EXCEED_MAXIMUM_PROFILE_COUNT("프로필은 최대 4개까지 만들 수 있습니다."),
+    PAYMENT_FAILURE("지불 사항 검증에 실패했습니다.");
+("지불 사항 검증에 실패했습니다.");
 
 
     private String msg;

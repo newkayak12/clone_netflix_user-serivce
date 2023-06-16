@@ -1,5 +1,8 @@
 package com.netflix_clone.userservice.repository.domains;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -9,6 +12,8 @@ import java.io.Serializable;
  */
 @Table(name = "mobileDeviceInfo")
 @Entity
+@DynamicInsert
+@DynamicUpdate
 public class MobileDeviceInfo implements Serializable {
 
     @EmbeddedId

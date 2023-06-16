@@ -1,13 +1,15 @@
 package com.netflix_clone.userservice.controller;
 
-import com.netflix_clone.userservice.components.configure.feign.ImageFeign;
 import com.netflix_clone.userservice.components.exceptions.CommonException;
 import com.netflix_clone.userservice.components.validations.TicketValid;
+import com.netflix_clone.userservice.repository.dto.reference.PageableRequest;
 import com.netflix_clone.userservice.repository.dto.reference.TicketDto;
+import com.netflix_clone.userservice.repository.dto.reference.TicketRaiseLogDto;
+import com.netflix_clone.userservice.repository.dto.request.TicketRaiseRequest;
 import com.netflix_clone.userservice.repository.dto.request.TicketSaveRequest;
 import com.netflix_clone.userservice.service.TicketService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,7 @@ public class TicketController {
         return new ResponseEntity<List<TicketDto>>(service.tickets(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{ticketNo}")
+    @GetMapping(value = "/{ticketNo:[\\d]+}")
     public ResponseEntity<TicketDto> ticket(@PathVariable Long ticketNo) throws CommonException {
         return new ResponseEntity(service.ticket(ticketNo),HttpStatus.OK);
     }
@@ -40,9 +42,19 @@ public class TicketController {
         return new ResponseEntity<>(service.save(ticketSaveRequest), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{ticketNo}")
+    @DeleteMapping(value = "/{ticketNo:[\\d]+}")
     public ResponseEntity<Boolean> remove(@PathVariable Long ticketNo){
         return new ResponseEntity<>(service.remove(ticketNo), HttpStatus.OK);
     }
 
+    @PostMapping(value = "/raise/ticket")
+    public ResponseEntity<TicketDto> raiseTicket (@RequestBody @Validated(value = {TicketValid.Raise.class})
+                                            @Valid TicketRaiseRequest request ) throws CommonException {
+       return ResponseEntity.ok(service.raiseTicket(request));
+    }
+
+    @GetMapping(value = "/raises")
+    public ResponseEntity<PageImpl<TicketRaiseLogDto>> raises(@ModelAttribute PageableRequest request) {
+        return ResponseEntity.ok(service.raises(request));
+    }
 }
