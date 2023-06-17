@@ -1,0 +1,17 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 249
+
+{
+  "fileNo" : 101,
+  "tableNo" : 18,
+  "fileType" : "PROFILE",
+  "storedFileName" : "20230615/68ac5521-b18f-4b64-9370-ded727386ab8.png",
+  "originalFileName" : "rawFile.png",
+  "orders" : null,
+  "contentType" : "image/png",
+  "fileSize" : 501150
+}
+----

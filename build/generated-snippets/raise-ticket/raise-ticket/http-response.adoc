@@ -1,0 +1,19 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 230
+
+{
+  "ticketNo" : 84,
+  "name" : "BASIC",
+  "type" : "BASIC",
+  "watchableSimultaneously" : 1,
+  "maximumResolution" : "HD",
+  "isSupportHDR" : false,
+  "savableCount" : 10,
+  "price" : 9900,
+  "isActive" : true,
+  "image" : null
+}
+----

@@ -1,0 +1,28 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 497
+
+{
+  "ticketNo" : 87,
+  "name" : "PREMIUM",
+  "type" : "PREMIUM",
+  "watchableSimultaneously" : 4,
+  "maximumResolution" : "UHD",
+  "isSupportHDR" : true,
+  "savableCount" : 999,
+  "price" : 13000,
+  "isActive" : true,
+  "image" : {
+    "fileNo" : 78,
+    "tableNo" : 87,
+    "fileType" : "TICKET",
+    "storedFileName" : "20230610/f46ce7d0-84db-4d53-b82a-23f4436d320e.png",
+    "originalFileName" : "rawFile.png",
+    "orders" : null,
+    "contentType" : "image/png",
+    "fileSize" : 501150
+  }
+}
+----

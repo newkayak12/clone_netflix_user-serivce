@@ -1,0 +1,5 @@
+[source,bash]
+----
+$ http --multipart POST 'http://localhost:8080/api/v1/profile/18/profileImage' \
+    'rawFile'@'rawFile.png'
+----

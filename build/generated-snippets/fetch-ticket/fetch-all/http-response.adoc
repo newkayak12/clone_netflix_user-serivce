@@ -1,0 +1,88 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 2015
+
+[ {
+  "ticketNo" : 84,
+  "name" : "BASIC",
+  "type" : "BASIC",
+  "watchableSimultaneously" : 1,
+  "maximumResolution" : "HD",
+  "isSupportHDR" : false,
+  "savableCount" : 10,
+  "price" : 9900,
+  "isActive" : true,
+  "image" : {
+    "fileNo" : 75,
+    "tableNo" : 84,
+    "fileType" : "TICKET",
+    "storedFileName" : "20230610/fc8f781d-5fb0-40d2-a1e5-e2f412166388.png",
+    "originalFileName" : "rawFile.png",
+    "orders" : null,
+    "contentType" : "image/png",
+    "fileSize" : 501150
+  }
+}, {
+  "ticketNo" : 85,
+  "name" : "ADVERTISE_STANDARD",
+  "type" : "ADVERTISE_STANDARD",
+  "watchableSimultaneously" : 1,
+  "maximumResolution" : "HD",
+  "isSupportHDR" : false,
+  "savableCount" : 10,
+  "price" : 4500,
+  "isActive" : true,
+  "image" : {
+    "fileNo" : 76,
+    "tableNo" : 85,
+    "fileType" : "TICKET",
+    "storedFileName" : "20230610/40160fd9-87e5-403a-b3e1-8af1b6080042.png",
+    "originalFileName" : "rawFile.png",
+    "orders" : null,
+    "contentType" : "image/png",
+    "fileSize" : 501150
+  }
+}, {
+  "ticketNo" : 86,
+  "name" : "STANDARD",
+  "type" : "STANDARD",
+  "watchableSimultaneously" : 4,
+  "maximumResolution" : "FHD",
+  "isSupportHDR" : false,
+  "savableCount" : 100,
+  "price" : 11000,
+  "isActive" : true,
+  "image" : {
+    "fileNo" : 77,
+    "tableNo" : 86,
+    "fileType" : "TICKET",
+    "storedFileName" : "20230610/f82a2cb4-75cd-42f7-a0d8-286c6659b237.png",
+    "originalFileName" : "rawFile.png",
+    "orders" : null,
+    "contentType" : "image/png",
+    "fileSize" : 501150
+  }
+}, {
+  "ticketNo" : 87,
+  "name" : "PREMIUM",
+  "type" : "PREMIUM",
+  "watchableSimultaneously" : 4,
+  "maximumResolution" : "UHD",
+  "isSupportHDR" : true,
+  "savableCount" : 999,
+  "price" : 13000,
+  "isActive" : true,
+  "image" : {
+    "fileNo" : 78,
+    "tableNo" : 87,
+    "fileType" : "TICKET",
+    "storedFileName" : "20230610/f46ce7d0-84db-4d53-b82a-23f4436d320e.png",
+    "originalFileName" : "rawFile.png",
+    "orders" : null,
+    "contentType" : "image/png",
+    "fileSize" : 501150
+  }
+} ]
+----

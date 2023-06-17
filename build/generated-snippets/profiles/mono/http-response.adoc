@@ -1,0 +1,26 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 466
+
+{
+  "profileNo" : 18,
+  "account" : null,
+  "profileName" : "PROFILE_NUMBER_1",
+  "regDate" : "2023-06-14T21:34:26",
+  "isPush" : true,
+  "lastSignInDate" : null,
+  "image" : {
+    "fileNo" : 96,
+    "tableNo" : 18,
+    "fileType" : "PROFILE",
+    "storedFileName" : "20230614/f2a84b6f-5b3c-47ff-97d7-dcbd93199a19.png",
+    "originalFileName" : "rawFile.png",
+    "orders" : null,
+    "contentType" : "image/png",
+    "fileSize" : 501150
+  },
+  "deviceInfo" : null
+}
+----

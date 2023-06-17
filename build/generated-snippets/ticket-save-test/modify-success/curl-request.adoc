@@ -1,0 +1,14 @@
+[source,bash]
+----
+$ curl 'http://localhost:8080/api/v1/ticket/save?ticketNo=83&name=STANDARD&type=STANDARD&watchableSimultaneously=1&maximumResolution=HD&isSupportHDR=false&savableCount=10&price=11000' -i -X POST \
+    -H 'Content-Type: multipart/form-data;charset=UTF-8' \
+    -F 'rawFile=@rawFile.png;type=image/png' \
+    -F 'ticketNo=83' \
+    -F 'name=STANDARD' \
+    -F 'type=STANDARD' \
+    -F 'watchableSimultaneously=1' \
+    -F 'maximumResolution=HD' \
+    -F 'isSupportHDR=false' \
+    -F 'savableCount=10' \
+    -F 'price=11000'
+----

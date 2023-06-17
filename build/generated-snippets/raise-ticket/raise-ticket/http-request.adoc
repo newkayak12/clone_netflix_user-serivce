@@ -1,0 +1,35 @@
+[source,http,options="nowrap"]
+----
+POST /api/v1/ticket/raise/ticket HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 560
+Host: localhost:8080
+
+{
+  "account" : {
+    "userNo" : 23,
+    "userId" : null,
+    "regDate" : null,
+    "isAdult" : null,
+    "mobileNo" : null,
+    "email" : null,
+    "isSubscribed" : null,
+    "profiles" : [ ],
+    "ticketStatus" : null
+  },
+  "ticket" : {
+    "ticketNo" : 84,
+    "name" : "BASIC",
+    "type" : "BASIC",
+    "watchableSimultaneously" : 1,
+    "maximumResolution" : "HD",
+    "isSupportHDR" : false,
+    "savableCount" : 10,
+    "price" : 9900,
+    "isActive" : true,
+    "image" : null
+  },
+  "payDay" : "2023-06-17",
+  "originalTransaction" : "IMP_0000001"
+}
+----
