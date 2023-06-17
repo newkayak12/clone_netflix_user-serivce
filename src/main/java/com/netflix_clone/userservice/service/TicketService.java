@@ -99,6 +99,8 @@ public class TicketService {
     public TicketDto raiseTicket(TicketRaiseRequest request) throws CommonException {
         TicketRaiseLogDto raiseLogDto = mapper.map(request, TicketRaiseLogDto.class);
         raiseLogDto.init(request.getPayDay());
+
+        log.warn(":::::::::::::::: {}", raiseLogDto);
         raiseLogDto = mapper.map(
                                      raiseRepository.save(mapper.map(raiseLogDto, TicketRaiseLog.class)),
                                      TicketRaiseLogDto.class

@@ -4,6 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix_clone.userservice.components.configure.feign.ImageFeign;
 import com.netflix_clone.userservice.components.enums.Resolution;
 import com.netflix_clone.userservice.components.enums.TicketType;
+import com.netflix_clone.userservice.repository.dto.reference.AccountDto;
+import com.netflix_clone.userservice.repository.dto.reference.TicketDto;
+import com.netflix_clone.userservice.repository.dto.reference.TicketRaiseLogDto;
+import com.netflix_clone.userservice.repository.dto.request.TicketRaiseRequest;
 import com.netflix_clone.userservice.util.AbstractControllerTest;
 import com.netflix_clone.userservice.util.TestUtil;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +26,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.DataInput;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -181,6 +186,58 @@ public class TicketControllerTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.isActive").value(isActive))
             .andExpect(jsonPath("$.image").isNotEmpty());
         }
+    }
+
+    @DisplayName(value = "티켓")
+    @Nested
+    public class RaiseTicket {
+
+        @DisplayName(value = "티켓 구매")
+        @Test
+        @Transactional
+        @Rollback
+        public void raiseTicket () throws Exception {
+            //given
+            TicketRaiseRequest request = new TicketRaiseRequest();
+
+            //AccountDto
+            AccountDto accountDto = new AccountDto();
+            accountDto.setUserNo(23L);
+
+            //TicketDto
+            TicketDto ticketDto = new TicketDto();
+            ticketDto.setTicketNo(84L);
+            ticketDto.setName("BASIC");
+            ticketDto.setType(TicketType.BASIC);
+            ticketDto.setWatchableSimultaneously(1);
+            ticketDto.setMaximumResolution(Resolution.HD);
+            ticketDto.setIsSupportHDR(false);
+            ticketDto.setSavableCount(10);
+            ticketDto.setPrice(BigInteger.valueOf(9900L));
+            ticketDto.setIsActive(true);
+
+            request.setAccount(accountDto);
+            request.setTicket(ticketDto);
+            request.setOriginalTransaction("IMP_0000001");
+
+
+            mockMvc.perform(
+                post(String.format("%s/raise/ticket", prefix))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(request))
+            )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.ticketNo").value(84L))
+            .andExpect(jsonPath("$.name").value("BASIC"))
+            .andExpect(jsonPath("$.type").value("BASIC"))
+            .andExpect(jsonPath("$.watchableSimultaneously").value(1))
+            .andExpect(jsonPath("$.maximumResolution").value("HD"))
+            .andExpect(jsonPath("$.isSupportHDR").value(false))
+            .andExpect(jsonPath("$.savableCount").value(10))
+            .andExpect(jsonPath("$.price").value(9900))
+            .andExpect(jsonPath("$.isActive").value(true));
+        }
+
     }
 
 }

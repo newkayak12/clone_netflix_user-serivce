@@ -49,7 +49,7 @@ public class TicketController {
 
     @PostMapping(value = "/raise/ticket")
     public ResponseEntity<TicketDto> raiseTicket (@RequestBody @Validated(value = {TicketValid.Raise.class})
-                                            @Valid TicketRaiseRequest request ) throws CommonException {
+                                                  @Valid TicketRaiseRequest request ) throws CommonException {
        return ResponseEntity.ok(service.raiseTicket(request));
     }
 

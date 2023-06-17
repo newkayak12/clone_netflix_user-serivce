@@ -31,6 +31,8 @@ public class TicketRaiseLog {
     private LocalDate endDate;
     @Column(name = "isActive", columnDefinition = "BIT(1)")
     private Boolean isActive;
+    @Column(name = "subscribeNext", columnDefinition = "BIT(1) default TRUE")
+    private Boolean subscribeNext;
 
 
 
