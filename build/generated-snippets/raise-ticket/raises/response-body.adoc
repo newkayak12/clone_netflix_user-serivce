@@ -1,0 +1,48 @@
+[source,options="nowrap"]
+----
+{
+  "content" : [ {
+    "raiseLogNo" : 2,
+    "ticket" : {
+      "ticketNo" : 84,
+      "name" : "BASIC",
+      "type" : "BASIC",
+      "watchableSimultaneously" : 1,
+      "maximumResolution" : "HD",
+      "isSupportHDR" : false,
+      "savableCount" : 10,
+      "price" : 9900,
+      "isActive" : true,
+      "image" : null
+    },
+    "startDate" : "2023-06-17",
+    "endDate" : "2023-07-17",
+    "isActive" : true
+  } ],
+  "pageable" : {
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 10,
+    "paged" : true,
+    "unpaged" : false
+  },
+  "last" : true,
+  "totalPages" : 1,
+  "totalElements" : 1,
+  "sort" : {
+    "empty" : true,
+    "sorted" : false,
+    "unsorted" : true
+  },
+  "number" : 0,
+  "first" : true,
+  "size" : 10,
+  "numberOfElements" : 1,
+  "empty" : false
+}
+----

@@ -39,7 +39,8 @@ public class TicketRaiseRepositoryImpl extends QuerydslRepositorySupport impleme
                 ),
                 ticketRaiseLog.startDate,
                 ticketRaiseLog.endDate,
-                ticketRaiseLog.isActive
+                ticketRaiseLog.isActive,
+                ticketRaiseLog.subscribeNext
                 ))
                 .from(ticketRaiseLog)
                 .leftJoin(ticket).on(ticket.ticketNo.eq(ticketRaiseLog.ticket.ticketNo))
@@ -76,7 +77,7 @@ public class TicketRaiseRepositoryImpl extends QuerydslRepositorySupport impleme
         )
         .from(ticketRaiseLog)
         .leftJoin(ticketRaiseLog.ticket, ticket)
-        .fetchJoin()
+//        .fetchJoin()
         .where(ticketRaiseLog.account.userNo.eq(request.getTableNo()))
         .orderBy(ticketRaiseLog.startDate.desc())
         .limit(pageable.getPageSize())

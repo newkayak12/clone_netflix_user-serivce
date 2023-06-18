@@ -238,6 +238,29 @@ public class TicketControllerTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.isActive").value(true));
         }
 
+        @DisplayName(value = "티켓 구매 리스트")
+        @Test
+        public void raises () throws Exception {
+            mockMvc.perform(
+                get(String.format("%s/raises", prefix))
+                .param("limit", "10")
+                .param("page", "1")
+                .param("tableNo", "23")
+            )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content.size()").value(1));
+        }
+
+
+        @DisplayName(value = "다음 달 구독 변경")
+        @Test
+        public void toggleSubscribeStatus () throws Exception {
+            mockMvc.perform(
+                patch(String.format("%s/toggle/subscribe/%d", prefix, 23))
+            )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").isBoolean());
+        }
     }
 
 }

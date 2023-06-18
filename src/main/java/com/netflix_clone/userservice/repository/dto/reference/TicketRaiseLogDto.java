@@ -29,6 +29,7 @@ public class TicketRaiseLogDto implements Serializable {
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean isActive;
+    private Boolean subscribeNext;
 
     @QueryProjection
     public TicketRaiseLogDto(Long raiseLogNo, TicketDto ticket, LocalDate startDate, LocalDate endDate, Boolean isActive) {
@@ -37,6 +38,15 @@ public class TicketRaiseLogDto implements Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
         this.isActive = isActive;
+    }
+    @QueryProjection
+    public TicketRaiseLogDto(Long raiseLogNo, TicketDto ticket, LocalDate startDate, LocalDate endDate, Boolean isActive, Boolean subscribeNext) {
+        this.raiseLogNo = raiseLogNo;
+        this.ticket = ticket;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isActive = isActive;
+        this.subscribeNext = subscribeNext;
     }
     @QueryProjection
     public TicketRaiseLogDto(Long raiseLogNo, TicketDto ticket) {

@@ -114,7 +114,14 @@ public class TicketService {
 
     @Transactional(readOnly = true)
     public PageImpl<TicketRaiseLogDto> raises(PageableRequest request) {
-        Pageable pageable = PageRequest.of(request.getPage(), request.getLimit());
+        Pageable pageable = PageRequest.of(request.getPage() - 1, request.getLimit());
         return raiseRepository.raises(pageable, request);
+    }
+
+    public Boolean toggleSubscribeStatus(Long userNo) throws CommonException {
+        TicketRaiseLog log = raiseRepository.findTopByAccountUserNoOrderByRaiseLogNoDesc(userNo)
+                                            .orElseThrow(() -> new CommonException(BecauseOf.NO_DATA));
+        log.toggleSubscribeStatus();
+        return true;
     }
 }

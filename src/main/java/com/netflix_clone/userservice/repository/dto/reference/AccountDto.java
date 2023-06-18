@@ -48,6 +48,7 @@ public class AccountDto implements Serializable {
     private String email;
     private Boolean isSubscribed;
     private LocalDateTime lastSignDate;
+
     private List<ProfileDto> profiles = new ArrayList<>();
     @Transient
     private TicketRaiseLogDto ticketStatus;

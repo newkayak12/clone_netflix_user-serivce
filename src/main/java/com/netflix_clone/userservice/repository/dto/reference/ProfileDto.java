@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ProfileDto implements Serializable {
     private Long profileNo;
+
     private AccountDto account;
 
     @NotEmpty(message = "프로필 이름을 입력하세요.", groups = {ProfileValid.Save.class, ProfileValid.ChangeProfileName.class})

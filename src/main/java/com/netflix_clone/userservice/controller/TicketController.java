@@ -57,4 +57,9 @@ public class TicketController {
     public ResponseEntity<PageImpl<TicketRaiseLogDto>> raises(@ModelAttribute PageableRequest request) {
         return ResponseEntity.ok(service.raises(request));
     }
+
+    @PatchMapping(value = "/toggle/subscribe/{userNo:[\\d]+}")
+    public ResponseEntity<Boolean> toggleSubscribeStatus(@PathVariable Long userNo) throws CommonException {
+        return ResponseEntity.ok(service.toggleSubscribeStatus(userNo));
+    }
 }
