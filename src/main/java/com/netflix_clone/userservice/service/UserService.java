@@ -56,8 +56,8 @@ public class UserService {
 
         TicketRaiseLogDto ticketStatus = Optional.ofNullable(ticketRaiseRepository.ticketInfoByUserNo(dto.getUserNo(), LocalDate.now()))
                                                  .orElseGet(() -> null);
-        dto.setTicketStatus(ticketStatus);
 
+        dto.setTicketStatus(ticketStatus);
         response.addHeader(Constants.TOKEN_NAME, tokenControl.encrypt(dto));
         return dto;
     }

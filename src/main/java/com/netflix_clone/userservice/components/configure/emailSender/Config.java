@@ -4,7 +4,6 @@ import com.github.newkayak12.config.SimpleEmailSender;
 import com.github.newkayak12.enums.Vendor;
 import com.netflix_clone.userservice.components.configure.ConfigMsg;
 import com.netflix_clone.userservice.components.constants.Constants;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;

@@ -85,7 +85,7 @@ dependencies {
 
 //    TOKEN
     implementation 'com.github.newkayak12:Dependency-Token:1.0.6'
-    implementation 'com.github.newkayak12:Dependency-EmailSender:1.0.0'
+    implementation 'com.github.newkayak12:Dependency-EmailSender:1.0.1'
 }
 
 
