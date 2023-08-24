@@ -25,10 +25,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -64,9 +61,10 @@ public class ProfileService {
     public List<ProfileDto> profiles(ProfileRequest profileRequest) {
         List<ProfileDto> profiles = repository.profiles(profileRequest);
         if( !profiles.isEmpty() ) {
-            List<FileDto> images = imageFeign.files(profiles.stream().map(ProfileDto::getProfileNo)
-                                             .collect(Collectors.toList()), FileType.PROFILE)
-                                             .getBody();
+            List<FileDto> images = Optional.ofNullable(
+                    imageFeign.files(profiles.stream().map(ProfileDto::getProfileNo)
+                            .collect(Collectors.toList()), FileType.PROFILE)
+                    ).map(value -> value.getBody()).orElseGet(() -> new ArrayList<>());
             profiles.forEach( profile -> profile.setImage( imageDelegate.setImage(images, profile.getProfileNo())));
 
         }
@@ -76,8 +74,9 @@ public class ProfileService {
     }
 
     public ProfileDto profile(Long profileNo, MobileDeviceInfoDto mobileDeviceInfoDto) {
+        log.warn("PROFILENO {}", profileNo);
         ProfileDto profileDto = repository.findByProfileNo(profileNo);
-        profileDto.setImage(imageFeign.file(profileNo, FileType.PROFILE).getBody());
+        profileDto.setImage(Optional.ofNullable(imageFeign.file(profileNo, FileType.PROFILE)).map(file -> file.getBody()).orElseGet(() -> null));
 
         if(Objects.nonNull(mobileDeviceInfoDto) && this.isDeviceInfoChanged(profileNo, mobileDeviceInfoDto)){
             profileDto.setDeviceInfo(this.changeDeviceInfo(profileNo, mobileDeviceInfoDto));

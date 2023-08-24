@@ -59,6 +59,9 @@ public class UserService {
 
         dto.setTicketStatus(ticketStatus);
         response.addHeader(Constants.TOKEN_NAME, tokenControl.encrypt(dto));
+
+
+        log.warn("DTO {}", dto);
         return dto;
     }
 

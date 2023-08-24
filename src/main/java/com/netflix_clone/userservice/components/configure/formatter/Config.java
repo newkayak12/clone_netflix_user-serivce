@@ -11,7 +11,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-@Configuration(value = "dateTime_format_config")
+//@Configuration(value = "dateTime_format_config")
 public class Config {
     @Bean
     public Formatter<LocalDate> localDateFormatter() {
